@@ -13,8 +13,12 @@ export default defineConfig([
       reactHooks.configs.flat.recommended,
       reactRefresh.configs.vite,
     ],
+    
     languageOptions: {
-      globals: globals.browser,
+      globals: {
+        ...globals.browser,
+        ...globals.node  // 👈 Adiciona variáveis do Node.js (incluindo process)
+      },
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
   },

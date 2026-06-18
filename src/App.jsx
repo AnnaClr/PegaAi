@@ -1,3 +1,5 @@
-export default <main>
+import AppRoutes from './routes.jsx'
 
-</main>
+export default function App() {
+  return <AppRoutes />
+}
