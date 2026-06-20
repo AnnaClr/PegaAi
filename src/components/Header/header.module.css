@@ -1,0 +1,177 @@
+.header {
+  background: #161127;
+  padding: 16px 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.headerContainer {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  font-family: 'Berkshire Swash', cursive;
+  font-size: 1.8rem;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.logoPega {
+  color: white;
+}
+
+.logoAi {
+  color: #8B5CF6;
+}
+
+.logoPlus {
+  color: white;
+  font-size: 1.6rem;
+  margin-left: 2px;
+}
+
+.mobileMenuBtn {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.mobileMenuBtn:hover {
+  color: #8B5CF6;
+}
+
+.navMenu {
+  display: flex;
+  align-items: center;
+  gap: 48px;
+}
+
+.navMenu a {
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.navMenu a:hover {
+  color: #8B5CF6;
+}
+
+.navMenu a i {
+  font-size: 1.2rem;
+}
+
+.entrarBtn {
+  background: #8B5CF6;
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.entrarBtn:hover {
+  background: #7C3AED;
+  transform: translateY(-1px);
+}
+
+.profileLink {
+  text-decoration: none;
+}
+
+.profileIcon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  font-size: 1.8rem;
+  color: white;
+  background: rgba(139, 92, 246, 0.15);
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.profileIcon i {
+  transition: transform 0.3s ease;
+}
+
+.profileIcon:hover {
+  background: #8B5CF6;
+  transform: scale(1.1);
+}
+
+.profileIcon:hover i {
+  transform: scale(1.05);
+}
+
+.profileBadge {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 12px;
+  height: 12px;
+  background: #10B981;
+  border: 2px solid #161127;
+  border-radius: 50%;
+}
+
+@media (max-width: 768px) {
+  .mobileMenuBtn {
+    display: block;
+  }
+
+  .navMenu {
+    position: fixed;
+    top: 70px;
+    left: -100%;
+    width: 100%;
+    height: calc(100vh - 70px);
+    background: #161127;
+    flex-direction: column;
+    padding: 40px 20px;
+    transition: left 0.3s ease;
+    gap: 30px;
+    overflow-y: auto;
+  }
+
+  .navMenu.active {
+    left: 0;
+  }
+
+  .navMenu a, .entrarBtn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .profileLink {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .profileIcon {
+    width: 50px;
+    height: 50px;
+    font-size: 2rem;
+  }
+}

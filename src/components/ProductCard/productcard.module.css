@@ -1,0 +1,257 @@
+.productCard {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid #f3f4f6;
+  cursor: pointer;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.productCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(94, 23, 235, 0.12);
+  border-color: #e8e0ff;
+}
+
+.productImage {
+  height: 220px;
+  overflow: hidden;
+  position: relative;
+  background: #faf9ff;
+}
+
+.productImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.productCard:hover .productImage img {
+  transform: scale(1.08);
+}
+
+.imageOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(94, 23, 235, 0) 0%,
+    rgba(94, 23, 235, 0.05) 50%,
+    rgba(94, 23, 235, 0.15) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.productCard:hover .imageOverlay {
+  opacity: 1;
+}
+
+.productInfo {
+  padding: 20px 20px 24px;
+  background: white;
+}
+
+.productTitle {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #1f2937;
+  margin: 0 0 6px 0;
+  transition: color 0.3s ease;
+  overflow: hidden;
+  line-height: 1.4;
+}
+
+.productCard:hover .productTitle {
+  color: #5e17eb;
+}
+
+.productCategory {
+  font-size: 0.8rem;
+  color: #9ca3af;
+  margin: 0 0 10px 0;
+  letter-spacing: 0.3px;
+  font-weight: 500;
+}
+
+.productPrice {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #5e17eb;
+  margin: 10px 0 12px 0;
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.productPrice span {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #9ca3af;
+}
+
+.productRating {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.stars {
+  display: flex;
+  gap: 3px;
+  align-items: center;
+}
+
+.starIcon {
+  color: #fbbf24;
+  font-size: 15px;
+  transition: transform 0.2s ease;
+}
+
+.productCard:hover .starIcon {
+  transform: scale(1.05);
+}
+
+.ratingText {
+  font-size: 0.85rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.rentBtn {
+  width: 100%;
+  background: linear-gradient(135deg, #5e17eb, #7c3aed);
+  border: none;
+  padding: 12px 24px;
+  border-radius: 12px;
+  color: white;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 0.3px;
+}
+
+.rentBtn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #7c3aed, #5e17eb);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.rentBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(94, 23, 235, 0.35);
+}
+
+.rentBtn:hover::before {
+  opacity: 1;
+}
+
+.rentBtn span {
+  position: relative;
+  z-index: 1;
+}
+
+.rentBtn:active {
+  transform: scale(0.97);
+}
+
+@media (max-width: 768px) {
+  .productImage {
+    height: 180px;
+  }
+  
+  .productInfo {
+    padding: 16px 16px 20px;
+  }
+  
+  .productTitle {
+    font-size: 0.95rem;
+  }
+  
+  .productPrice {
+    font-size: 1.2rem;
+  }
+  
+  .rentBtn {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .productImage {
+    height: 160px;
+  }
+  
+  .productInfo {
+    padding: 14px 14px 18px;
+  }
+  
+  .productTitle {
+    font-size: 0.9rem;
+  }
+  
+  .productRating {
+    gap: 6px;
+  }
+  
+  .starIcon {
+    font-size: 13px;
+  }
+  
+  .ratingText {
+    font-size: 0.75rem;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.productCard {
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+.productCard:nth-child(2) {
+  animation-delay: 0.05s;
+}
+
+.productCard:nth-child(3) {
+  animation-delay: 0.1s;
+}
+
+.productCard:nth-child(4) {
+  animation-delay: 0.15s;
+}
+
+.productCard:nth-child(5) {
+  animation-delay: 0.2s;
+}
+
+.productCard:nth-child(6) {
+  animation-delay: 0.25s;
+}

@@ -1,3 +1,6 @@
-export default <main>
+import AppRoutes from './routes/routes';
+import './App.css';
 
-</main>
+export default function App() {
+  return <AppRoutes />;
+}

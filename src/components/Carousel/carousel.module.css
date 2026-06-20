@@ -1,0 +1,86 @@
+.carouselSection {
+  position: relative;
+}
+
+.carouselControls {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.arrowBtn {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: white;
+  border: 1px solid #E5E7EB;
+  color: #5e17eb;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.arrowBtn:hover {
+  background: #5e17eb;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.carouselContainer {
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  cursor: grab;
+  scrollbar-width: thin;
+  position: relative;
+}
+
+.carouselContainer.dragging {
+  cursor: grabbing;
+  scroll-behavior: auto;
+}
+
+.carouselContainer::-webkit-scrollbar {
+  height: 6px;
+}
+
+.carouselContainer::-webkit-scrollbar-track {
+  background: #F3F4F6;
+  border-radius: 10px;
+}
+
+.carouselContainer::-webkit-scrollbar-thumb {
+  background: #5e17eb;
+  border-radius: 10px;
+}
+
+.carouselTrack {
+  display: flex;
+  gap: 28px;
+  padding: 4px 2px 8px 2px;
+}
+
+.carouselTrack > * {
+  flex: 0 0 auto;
+  width: 300px;
+}
+
+@media (max-width: 768px) {
+  .carouselTrack > * {
+    width: 280px;
+  }
+  
+  .arrowBtn {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+@media (max-width: 576px) {
+  .carouselTrack > * {
+    width: 260px;
+  }
+}
