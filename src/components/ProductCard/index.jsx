@@ -1,60 +1,72 @@
-import { useNavigate } from 'react-router-dom';
-import { FaStar, FaStarHalfAlt, FaRegStar } from 'react-icons/fa';
+import { useNavigate } from "react-router-dom";
+import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 import styles from "./productCard.module.css";
 
 export default function ProductCard({ product, onRent }) {
   const navigate = useNavigate();
 
   const renderStars = (rating) => {
-    const stars = [];
+    const starElements = [];
     const fullStars = Math.floor(rating);
     const hasHalfStar = rating % 1 !== 0;
 
     for (let i = 0; i < fullStars; i++) {
-      stars.push(<FaStar key={i} className={styles.starIcon} />);
+      starElements.push(
+        <FaStar key={`full-${i}`} className={styles.starIcon} />,
+      );
     }
+
     if (hasHalfStar) {
-      stars.push(<FaStarHalfAlt key="half" className={styles.starIcon} />);
+      starElements.push(
+        <FaStarHalfAlt key="half" className={styles.starIcon} />,
+      );
     }
-    while (stars.length < 5) {
-      stars.push(<FaRegStar key={stars.length} className={styles.starIcon} />);
+
+    const emptyStars = 5 - starElements.length;
+    for (let i = 0; i < emptyStars; i++) {
+      starElements.push(
+        <FaRegStar key={`empty-${i}`} className={styles.starIcon} />,
+      );
     }
-    return stars;
+
+    return starElements;
   };
 
   const handleRent = (e) => {
     e.preventDefault();
     e.stopPropagation();
     if (onRent) {
-      onRent(product.id);
+      onRent(product.product_id);
     } else {
-      navigate(`/alugar/${product.id}`);
+      navigate(`/alugar/${product.product_id}`);
     }
   };
 
   const handleCardClick = () => {
-    navigate(`/product/${product.id}`);
+    navigate(`/product/${product.product_id}`);
   };
 
   return (
     <div className={styles.productCard} onClick={handleCardClick}>
       <div className={styles.productImage}>
-        <img src={product.image} alt={product.title} loading="lazy" />
+        <img src={product.image} alt={product.name} loading="lazy" />
         <div className={styles.imageOverlay}></div>
       </div>
       <div className={styles.productInfo}>
-        <h3 className={styles.productTitle}>{product.title}</h3>
+        <h3 className={styles.productTitle}>{product.name}</h3>
         <p className={styles.productCategory}>{product.category}</p>
         <div className={styles.productPrice}>
-          R$ {product.price.toFixed(2)} <span>/dia</span>
+          R$ {product.price_per_day.toFixed(2)} <span>/dia</span>
         </div>
         <div className={styles.productRating}>
-          <div className={styles.stars}>{renderStars(product.stars)}</div>
+          <div className={styles.stars}>{renderStars(product.rating)}</div>
           <span className={styles.ratingText}>
             {product.rating} ({product.reviews} avaliações)
           </span>
         </div>
-        <button className={styles.rentBtn} onClick={handleRent}>Alugar agora</button>
+        <button className={styles.rentBtn} onClick={handleRent}>
+          Alugar agora
+        </button>
       </div>
     </div>
   );

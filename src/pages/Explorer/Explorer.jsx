@@ -115,9 +115,9 @@ export default function Explorer() {
   const isDraggingRef = useRef(false);
   
   const allProducts = useMemo(() => [...featuredProducts, ...recommendedProducts], []);
-  const initialCategoryId = searchParams.get('categoria')
-    ? categories.find(c => c.id === parseInt(searchParams.get('categoria')))?.id
-    : null;
+  
+  const categoryParam = searchParams.get('categoria');
+  const initialCategoryId = categoryParam ? parseInt(categoryParam) : null;
   
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('relevance');
@@ -125,7 +125,7 @@ export default function Explorer() {
     initialCategoryId ? [initialCategoryId] : []
   );
   const [maxPrice, setMaxPrice] = useState(500);
-  const [minRating, setMinRating] = useState(4);
+  const [minRating, setMinRating] = useState(0);
   const [showFilters, setShowFilters] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 992);
 
@@ -135,20 +135,17 @@ export default function Explorer() {
     if (searchTerm.trim()) {
       const term = searchTerm.toLowerCase().trim();
       results = results.filter(product => 
-        product.title.toLowerCase().includes(term) ||
-        product.category.toLowerCase().includes(term)
+        product.name.toLowerCase().includes(term)
       );
     }
 
     if (selectedCategories.length > 0) {
       results = results.filter(product => 
-        selectedCategories.includes(
-          categories.find(c => c.name === product.category)?.id
-        )
+        selectedCategories.includes(product.category_id)
       );
     }
 
-    results = results.filter(product => product.price <= maxPrice);
+    results = results.filter(product => product.price_per_day <= maxPrice);
 
     if (minRating > 0) {
       results = results.filter(product => product.rating >= minRating);
@@ -156,10 +153,10 @@ export default function Explorer() {
 
     switch (sortBy) {
       case 'lowest':
-        results.sort((a, b) => a.price - b.price);
+        results.sort((a, b) => a.price_per_day - b.price_per_day);
         break;
       case 'highest':
-        results.sort((a, b) => b.price - a.price);
+        results.sort((a, b) => b.price_per_day - a.price_per_day);
         break;
       default:
         break;
@@ -179,9 +176,8 @@ export default function Explorer() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-
   const handleRent = (productId) => {
-    navigate(`/produto/${productId}`);
+    navigate(`/product/${productId}`);
   };
 
   const handleCategoryChange = (categoryId) => {
@@ -197,11 +193,15 @@ export default function Explorer() {
     setSortBy('relevance');
     setSelectedCategories([]);
     setMaxPrice(500);
-    setMinRating(4);
+    setMinRating(0);
   };
 
   const handleRatingClick = (rating) => {
-    setMinRating(rating);
+    if (minRating === rating) {
+      setMinRating(0);
+    } else {
+      setMinRating(rating);
+    }
   };
 
   const handleSliderStart = (e) => {
@@ -317,9 +317,9 @@ export default function Explorer() {
                   >
                     <FaFilter />
                     <span>Filtros</span>
-                    {(selectedCategories.length > 0) && (
+                    {(selectedCategories.length > 0 || minRating > 0) && (
                       <span className={styles.filterBadge}>
-                        {selectedCategories.length}
+                        {selectedCategories.length + (minRating > 0 ? 1 : 0)}
                       </span>
                     )}
                   </button>
@@ -337,13 +337,18 @@ export default function Explorer() {
             
             <div className={styles.resultsInfo}>
               <span>{filteredProducts.length} produtos encontrados</span>
-              {selectedCategories.length > 0 && (
+              {(selectedCategories.length > 0 || minRating > 0) && (
                 <div className={styles.activeFilters}>
                   {selectedCategories.map(id => (
                     <span key={id} className={styles.filterTag}>
                       {getCategoryName(id)}
                     </span>
                   ))}
+                  {minRating > 0 && (
+                    <span className={styles.filterTag}>
+                      {minRating}+ estrelas
+                    </span>
+                  )}
                 </div>
               )}
             </div>
@@ -351,7 +356,7 @@ export default function Explorer() {
             <div className={styles.productsGrid}>
               {filteredProducts.length > 0 ? (
                 filteredProducts.map(product => (
-                  <ProductCard key={product.id} product={product} onRent={handleRent} />
+                  <ProductCard key={product.product_id} product={product} onRent={handleRent} />
                 ))
               ) : (
                 <div className={styles.noResults}>
