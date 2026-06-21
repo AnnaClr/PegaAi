@@ -1,0 +1,261 @@
+.loginContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #f0f0f0;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  padding: 40px 20px;
+  box-sizing: border-box;
+}
+
+.loginCard {
+  display: flex;
+  flex: 0 0 380px;
+  flex-direction: column;
+  justify-content: center;
+  width: 380px;
+  height: 560px;
+  padding: 48px 40px;
+  background-color: #ffffff;
+  border-radius: 16px 0 0 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
+}
+
+.loginHeader {
+  margin-bottom: 32px;
+  text-align: left;
+}
+
+.loginHeader h1 {
+  margin: 0 0 4px 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.loginHeader p {
+  margin: 0;
+  font-size: 14px;
+  color: #8a8a8a;
+}
+
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.inputGroup label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #333333;
+}
+
+.inputGroup input {
+  padding: 12px 14px;
+  font-size: 14px;
+  color: #1a1a1a;
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.inputGroup input::placeholder {
+  color: #b5b5b5;
+}
+
+.inputGroup input:focus {
+  border-color: #6c2bd9;
+  box-shadow: 0 0 0 3px rgba(108, 43, 217, 0.12);
+}
+
+.loginOptions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: -4px;
+  font-size: 13px;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #555555;
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkbox input {
+  width: 14px;
+  height: 14px;
+  accent-color: #6c2bd9;
+  cursor: pointer;
+}
+
+.forgotPassword {
+  color: #6c2bd9;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.forgotPassword:hover {
+  text-decoration: underline;
+}
+
+.loginBtn {
+  width: 100%;
+  padding: 13px;
+  margin-top: 4px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  color: #ffffff;
+  background-color: #6c2bd9;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.loginBtn:hover {
+  background-color: #5a23b5;
+}
+
+.loginBtn:active {
+  transform: scale(0.98);
+}
+
+.socialLogin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.socialLogin span {
+  position: relative;
+  width: 100%;
+  text-align: center;
+  font-size: 12px;
+  color: #aaaaaa;
+}
+
+.socialLogin span::before,
+.socialLogin span::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 38%;
+  height: 1px;
+  background-color: #e5e5e5;
+}
+
+.socialLogin span::before {
+  left: 0;
+}
+
+.socialLogin span::after {
+  right: 0;
+}
+
+.socialIcons {
+  display: flex;
+  gap: 14px;
+}
+
+.socialBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  background-color: #ffffff;
+  border: 1px solid #e5e5e5;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: border-color 0.2s ease, transform 0.1s ease;
+}
+
+.socialBtn:hover {
+  border-color: #6c2bd9;
+  transform: translateY(-2px);
+}
+
+.loginFooter {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 13px;
+  color: #777777;
+}
+
+.loginFooter a {
+  color: #6c2bd9;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.loginFooter a:hover {
+  text-decoration: underline;
+}
+
+.loginImage {
+  position: relative;
+  flex: 0 0 380px;
+  width: 380px;
+  height: 560px;
+  overflow: hidden;
+  border-radius: 0 16px 16px 0;
+}
+
+.loginImage img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+}
+
+.imageOverlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 24px;
+  background: linear-gradient(to top, rgba(20, 10, 40, 0.75) 0%, rgba(20, 10, 40, 0.1) 70%, transparent 100%);
+  color: #ffffff;
+}
+
+.imageOverlay h3 {
+  margin: 0 0 4px 0;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.imageOverlay p {
+  margin: 0;
+  font-size: 13px;
+  opacity: 0.9;
+}
+
+@media (max-width: 800px) {
+  .loginImage {
+    display: none;
+  }
+
+  .loginCard {
+    border-radius: 16px;
+  }
+}

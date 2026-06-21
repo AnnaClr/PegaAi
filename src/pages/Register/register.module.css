@@ -1,0 +1,283 @@
+.registerContainer {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f0f0;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  padding: 40px 20px;
+  box-sizing: border-box;
+}
+
+.registerCard {
+  display: flex;
+  flex: 0 0 420px;
+  flex-direction: column;
+  justify-content: center;
+  width: 420px;
+  height: 680px;
+  padding: 44px 40px;
+  background-color: #ffffff;
+  border-radius: 16px 0 0 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
+}
+
+.registerHeader {
+  margin-bottom: 28px;
+  text-align: left;
+}
+
+.registerHeader h1 {
+  margin: 0 0 4px 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.registerHeader p {
+  margin: 0;
+  font-size: 14px;
+  color: #8a8a8a;
+}
+
+.registerForm {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.formRow {
+  display: flex;
+  gap: 14px;
+}
+
+.formRow .inputGroup {
+  flex: 1;
+  min-width: 0;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.inputGroup label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #333333;
+}
+
+.optional {
+  font-weight: 400;
+  color: #aaaaaa;
+}
+
+.inputGroup input {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 14px;
+  color: #1a1a1a;
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.inputGroup input::placeholder {
+  color: #b5b5b5;
+}
+
+.inputGroup input:focus {
+  border-color: #6c2bd9;
+  box-shadow: 0 0 0 3px rgba(108, 43, 217, 0.12);
+}
+
+.terms {
+  margin-top: -2px;
+}
+
+.checkbox {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+  font-size: 12.5px;
+  color: #555555;
+  cursor: pointer;
+  user-select: none;
+  line-height: 1.4;
+}
+
+.checkbox input {
+  width: 14px;
+  height: 14px;
+  margin-right: 2px;
+  accent-color: #6c2bd9;
+  cursor: pointer;
+}
+
+.checkbox a {
+  color: #6c2bd9;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.checkbox a:hover {
+  text-decoration: underline;
+}
+
+.registerBtn {
+  width: 100%;
+  padding: 13px;
+  margin-top: 4px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  color: #ffffff;
+  background-color: #6c2bd9;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.registerBtn:hover {
+  background-color: #5a23b5;
+}
+
+.registerBtn:active {
+  transform: scale(0.98);
+}
+
+.socialRegister {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.socialRegister span {
+  position: relative;
+  width: 100%;
+  text-align: center;
+  font-size: 12px;
+  color: #aaaaaa;
+}
+
+.socialRegister span::before,
+.socialRegister span::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 34%;
+  height: 1px;
+  background-color: #e5e5e5;
+}
+
+.socialRegister span::before {
+  left: 0;
+}
+
+.socialRegister span::after {
+  right: 0;
+}
+
+.socialIcons {
+  display: flex;
+  gap: 14px;
+}
+
+.socialBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  background-color: #ffffff;
+  border: 1px solid #e5e5e5;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: border-color 0.2s ease, transform 0.1s ease;
+}
+
+.socialBtn:hover {
+  border-color: #6c2bd9;
+  transform: translateY(-2px);
+}
+
+.registerFooter {
+  margin-top: 22px;
+  text-align: center;
+  font-size: 13px;
+  color: #777777;
+}
+
+.registerFooter a {
+  color: #6c2bd9;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.registerFooter a:hover {
+  text-decoration: underline;
+}
+
+.registerImage {
+  position: relative;
+  flex: 0 0 320px;
+  width: 320px;
+  height: 680px;
+  overflow: hidden;
+  border-radius: 0 16px 16px 0;
+}
+
+.registerImage img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.imageOverlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 24px;
+  background: linear-gradient(to top, rgba(20, 10, 40, 0.75) 0%, rgba(20, 10, 40, 0.1) 70%, transparent 100%);
+  color: #ffffff;
+}
+
+.imageOverlay h3 {
+  margin: 0 0 4px 0;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.imageOverlay p {
+  margin: 0;
+  font-size: 13px;
+  opacity: 0.9;
+}
+
+@media (max-width: 850px) {
+  .registerImage {
+    display: none;
+  }
+
+  .registerCard {
+    border-radius: 16px;
+  }
+
+  .formRow {
+    flex-direction: column;
+    gap: 16px;
+  }
+}
