@@ -1,0 +1,144 @@
+.footer {
+  background: #161127;
+  color: #D1D5DB;
+  padding-top: 60px;
+  margin-top: 60px;
+  position: relative;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  font-family: 'Berkshire Swash', cursive;
+  font-size: 1.6rem;
+  margin-bottom: 20px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.logoPega {
+  color: white;
+}
+
+.logoAi {
+  color: #8B5CF6;
+}
+
+.logoPlus {
+  color: white;
+  font-size: 1.4rem;
+  margin-left: 2px;
+}
+
+.footerGrid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 48px;
+  padding-bottom: 50px;
+}
+
+.footerBrand p {
+  line-height: 1.6;
+  margin-bottom: 25px;
+  color: #9CA3AF;
+  font-size: 0.9rem;
+}
+
+.socialLinks {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.socialLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  background: rgba(139, 92, 246, 0.15);
+  border-radius: 50%;
+  color: #D1D5DB;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+}
+
+.socialLink:hover {
+  background: #8B5CF6;
+  color: white;
+  transform: translateY(-3px);
+}
+
+.footerLinks h4 {
+  color: white;
+  margin-bottom: 20px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  position: relative;
+  padding-bottom: 12px;
+}
+
+.footerLinks h4::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 35px;
+  height: 2px;
+  background: #8B5CF6;
+  border-radius: 2px;
+}
+
+.footerLinks ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footerLinks li {
+  margin-bottom: 12px;
+}
+
+.footerLinks a {
+  text-decoration: none;
+  color: #9CA3AF;
+  transition: all 0.3s ease;
+  display: inline-block;
+  font-size: 0.9rem;
+}
+
+.footerLinks a:hover {
+  color: #8B5CF6;
+  transform: translateX(5px);
+}
+
+.footerBottom {
+  border-top: 1px solid rgba(139, 92, 246, 0.2);
+  padding: 25px 0;
+  text-align: center;
+  font-size: 0.85rem;
+  color: #9CA3AF;
+}
+
+@media (max-width: 968px) {
+  .footerGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+  }
+}
+
+@media (max-width: 576px) {
+  .footerGrid {
+    grid-template-columns: 1fr;
+    gap: 35px;
+  }
+  
+  .container {
+    padding: 0 20px;
+  }
+}
