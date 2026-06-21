@@ -8,6 +8,9 @@ import ViewProduct from '../pages/ViewProduct/ViewProduct';
 import Profile from '../pages/Profile/Profile';
 import ProductsRentals from '../pages/ProductsRentals/ProductsRentals';
 import ProductsMy from '../pages/ProductsMy/ProductsMy';
+import Explorer from '../pages/Explorer/Explorer';
+import Cart from '../pages/Cart/Cart';
+import Checkout from '../pages/Checkout/Checkout';
 
 export default function AppRoutes() {
   return (
@@ -23,6 +26,9 @@ export default function AppRoutes() {
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/explorer" element={<Explorer />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/checkout" element={<Checkout />} />
         </Routes>
       </main>
     </BrowserRouter>

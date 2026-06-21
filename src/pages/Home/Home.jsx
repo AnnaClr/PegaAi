@@ -17,7 +17,7 @@ export default function Home() {
   };
 
   const handleCategoryClick = (categoryId) => {
-    navigate(`/category/${categoryId}`);
+    navigate(`/explorar?categoria=${categoryId}`);
   };
 
   return (
@@ -93,7 +93,8 @@ export default function Home() {
                   onClick={() => handleCategoryClick(category.id)}
                   role="button"
                   tabIndex={0}
-                  onKeyPress={(e) => e.key === 'Enter' && handleCategoryClick(category.id)}>
+                  onKeyDown={(e) => e.key === 'Enter' && handleCategoryClick(category.id)}
+                >
                   <div className={styles.categoryImage}>
                     <img src={category.image} alt={category.name} loading="lazy" />
                     <div className={styles.categoryOverlay}>
@@ -115,7 +116,7 @@ export default function Home() {
             </div>
             <Carousel>
               {featuredProducts.map(product => (
-                <ProductCard key={product.id} product={product} onRent={handleRent} />
+                <ProductCard key={product.product_id} product={product} onRent={handleRent} />
               ))}
             </Carousel>
           </div>
@@ -129,7 +130,7 @@ export default function Home() {
             </div>
             <Carousel>
               {recommendedProducts.map(product => (
-                <ProductCard key={product.id} product={product} onRent={handleRent} />
+                <ProductCard key={product.product_id} product={product} onRent={handleRent} />
               ))}
             </Carousel>
           </div>
