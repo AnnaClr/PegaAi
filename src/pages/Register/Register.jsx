@@ -1,10 +1,14 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import api from '../../utils/axios';
+import { Link, useNavigate } from 'react-router-dom';
 import { FcGoogle } from 'react-icons/fc';
 import { FaFacebook, FaApple } from 'react-icons/fa';
 import styles from './register.module.css';
 
 export default function Register() {
+
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     fullname: '',
     cpf: '',
@@ -32,6 +36,26 @@ export default function Register() {
     console.log(`Login com ${provider}`);
   };
 
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await api.post('/users', {
+        name: formData.fullname,
+        cpf: formData.cpf,
+        email: formData.email,
+        phone_number: formData.phone,
+        password: formData.password,
+      });
+      if (response.status === 201 || response.status === 200) {
+        const loginData = await api.get(`/users?email=eq.${formData.email}&password=eq.${formData.password}`);
+        localStorage.setItem('user', JSON.stringify(loginData.data[0]));
+        navigate('/explorer');
+      }
+    } catch (error) {
+      console.error('Erro ao registrar usuário:', error.response?.data || error.message);
+    }
+  }
+
   return (
     <main className={styles.registerContainer}>
       <section className={styles.registerCard}>
@@ -49,7 +73,7 @@ export default function Register() {
                 id="fullname"
                 name="fullname"
                 placeholder="João Silva"
-                value={formData.fullname}
+                value={formData.fuullname}
                 onChange={handleChange}
                 autoComplete="name"
               />
@@ -93,7 +117,7 @@ export default function Register() {
               id="phone"
               name="phone"
               placeholder="(11) 99999-9999"
-              value={formData.phone}
+              value={formData.phone_number}
               onChange={handleChange}
               autoComplete="tel"
             />
@@ -142,10 +166,7 @@ export default function Register() {
             </label>
           </div>
           
-          <button 
-            type="submit"
-            className={styles.registerBtn}
-          >
+          <button type="submit" className={styles.registerBtn} onClick={onSubmit} >
             Criar conta gratuita
           </button>
           

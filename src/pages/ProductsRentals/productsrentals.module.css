@@ -1,0 +1,156 @@
+.container {
+  padding: 40px 48px;
+  min-height: 100vh;
+  background: #f5f6f7;
+  color: #111827;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+.header {
+  max-width: 1180px;
+  margin: 0 auto 18px;
+}
+
+.header h1 {
+  font-size: 22px;
+  color: #111827;
+  margin-bottom: 6px;
+}
+
+.subtitle {
+  color: #4b5563;
+  font-size: 14px;
+}
+
+.grid {
+  max-width: 1180px;
+  margin: 18px auto 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 18px;
+}
+
+.card {
+  background: #fff;
+  padding: 14px;
+  border-radius: 12px;
+  display: flex;
+  gap: 12px;
+  box-shadow: 0 6px 18px rgba(16,24,40,0.06);
+  align-items: flex-start;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(16,24,40,0.08);
+}
+
+.thumb {
+  width: 140px;
+  height: 105px;
+  flex: 0 0 140px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.productName {
+  margin: 0;
+  font-size: 18px;
+  color: #111827;
+}
+
+.meta {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.category {
+  display: inline-block;
+  background: rgba(124,58,237,0.08);
+  color: #7c3aed;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+}
+
+.price {
+  margin-left: auto;
+  color: #7c3aed;
+  font-weight: 700;
+}
+
+.pDay {
+  font-size: 12px;
+  color: #6b7280;
+  margin-left: 6px;
+}
+
+.dates {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  color: #4b5563;
+  font-size: 13px;
+}
+
+.owner {
+  font-size: 13px;
+  color: #374151;
+}
+
+.badge {
+  margin-top: 6px;
+  display: inline-block;
+  padding: 6px 8px;
+  background: rgba(239,68,68,0.08);
+  color: #ef4444;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.exceeded {
+  border-left: 6px solid #ef4444;
+}
+
+.loading, .empty {
+  max-width: 1180px;
+  margin: 24px auto;
+  background: #fff;
+  padding: 18px;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(16,24,40,0.06);
+  text-align: center;
+  color: #6b7280;
+}
+
+@media (max-width: 720px) {
+  .card {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .thumb {
+    width: 100%;
+    height: 180px;
+    flex: none;
+  }
+}

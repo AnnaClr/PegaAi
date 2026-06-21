@@ -1,10 +1,15 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { FaBars, FaHeart, FaShoppingCart, FaUserCircle } from "react-icons/fa";
+import { FaBars, FaShoppingCart, FaUserCircle } from "react-icons/fa";
 import styles from "./header.module.css";
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const verifyLogin = () => {
+    const user = localStorage.getItem('user');
+    return user;
+  }
 
   return (
     <header className={styles.header}>
@@ -24,10 +29,11 @@ export default function Header() {
         <nav className={`${styles.navMenu} ${isMobileMenuOpen ? styles.active : ""}`}>
           <Link to="/"><span className={styles.linkText}>Página Inicial</span></Link>
           <Link to="/explorer"><span className={styles.linkText}>Explorar</span></Link>
-          <Link to="/favorites"><FaHeart size={20} /></Link>
+          <Link to="/products/rentals"><span className={styles.linkText}>Produtos Alugadoss</span></Link>
+          <Link to="/products/my"><span className={styles.linkText}>Meus Produtos</span></Link>
           <Link to="/cart"><FaShoppingCart size={20} /></Link>
-          <Link to="/login" className={styles.entrarBtn}>Entrar</Link>
-          <Link to="/perfil" className={styles.profileLink}>
+          <Link to="/login" className={styles.entrarBtn} style={{display: verifyLogin()? 'none' : ''}} >Entrar</Link>
+          <Link to="/profile" className={styles.profileLink} style={{display: verifyLogin()? '' : 'none'}}>
             <div className={styles.profileIcon}>
               <FaUserCircle size={28} />
               <span className={styles.profileBadge}></span>

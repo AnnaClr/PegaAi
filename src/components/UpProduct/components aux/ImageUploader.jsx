@@ -11,11 +11,10 @@ import {
   createProduct,
   saveImageUrlsToDatabase,
   uploadImageToStorage,
-  isAllUploaded,
 } from './ImageUploader.helpers';
 import './ImageUploader.css';
 
-function ImageUploader({ name, desc, categoryId, price, days, userId = 1 }) {
+function ImageUploader({ name, desc, categoryId, price, days }) {
   const [images, setImages] = useState([]);
   const [uploading, setUploading] = useState(false);
   const [productId, setProductId] = useState(null);
@@ -50,18 +49,14 @@ function ImageUploader({ name, desc, categoryId, price, days, userId = 1 }) {
       return;
     }
 
-    const allUploaded = isAllUploaded(images);
-    if (allUploaded) {
-      alert('Todas as imagens já foram enviadas!');
-      return;
-    }
-
     setUploading(true);
     const urls = [];
 
     try {
       let activeProductId = productId;
       if (!activeProductId) {
+        const user = JSON.parse(localStorage.getItem('user'));
+        const userId = user.user_id;        
         const productPayload = buildProductPayload({ name, desc, categoryId, price, days, userId });
         activeProductId = await createProduct(productPayload);
         setProductId(activeProductId);
@@ -91,8 +86,7 @@ function ImageUploader({ name, desc, categoryId, price, days, userId = 1 }) {
 
       if (urls.length > 0) {
         await saveImageUrlsToDatabase(urls, activeProductId);
-        alert(`${urls.length} imagem(ns) enviadas e salvas com sucesso!`);
-        console.log('📸 URLs salvas:', urls);
+       
       }
 
     } catch (error) {
@@ -102,7 +96,7 @@ function ImageUploader({ name, desc, categoryId, price, days, userId = 1 }) {
         img.status === 'uploading' ? { ...img, status: 'error' } : img
       ));
 
-      alert('Erro ao processar upload. Verifique o console.');
+      alert('Erro ao processar upload.');
 
     } finally {
       setUploading(false);

@@ -56,7 +56,7 @@ export const buildProductPayload = ({
   categoryId,
   price,
   days,
-  userId = 1,
+  userId,
 }) => {
   const parsedPrice = Number(String(price).replace(",", "."));
   const parsedCategoryId = Number(categoryId);

@@ -1,10 +1,14 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import api from '../../utils/axios';
 import { FcGoogle } from 'react-icons/fc';
 import { FaFacebook, FaApple } from 'react-icons/fa';
 import styles from './login.module.css';
 
 export default function Login() {
+
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -19,15 +23,20 @@ export default function Login() {
     });
   };
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    console.log('Dados do login:', formData);
-  };
-
   const handleSocialLogin = (provider) => {
     console.log(`Login com ${provider}`);
   };
 
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const loginData = await api.get(`/users?email=eq.${formData.email}&password=eq.${formData.password}`);
+      localStorage.setItem('user', JSON.stringify(loginData.data[0]));
+      navigate('/explorer');
+    } catch (error) {
+      console.error('Erro ao fazer login:', error.response?.data || error.message);
+    }
+  };
   return (
     <main className={styles.loginContainer}>
       <section className={styles.loginCard}>
@@ -36,7 +45,7 @@ export default function Login() {
           <p>Faça login para continuar</p>
         </header>
 
-        <form className={styles.loginForm} onSubmit={handleLogin} noValidate>
+        <form className={styles.loginForm} noValidate>
           <div className={styles.inputGroup}>
             <label htmlFor="email">E-mail</label>
             <input
@@ -78,7 +87,7 @@ export default function Login() {
             </Link>
           </div>
           
-          <button type="submit" className={styles.loginBtn}>
+          <button type="button" className={styles.loginBtn} onClick={onSubmit}>
             Entrar
           </button>
           

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import ImageUploader from './components aux/ImageUploader';
 import api from '../../utils/axios';
+import './UpProduct.css';
 
 export default function UpProduct() {
   const [name, setName] = useState('');
@@ -59,40 +60,85 @@ export default function UpProduct() {
   }
 
   return (
-    <main>
-      <input type="text" placeholder="Nome do produto" value={name} onChange={(e) => setName(e.target.value)} />
-      <textarea placeholder="Descrição do produto" value={desc} onChange={(e) => setDesc(e.target.value)}></textarea>
-      <div>
-        <input
-          type="text"
-          placeholder="Preço diario do aluguel"
-          value={price}
-          onChange={handlePriceChange}
-          onBlur={handlePriceBlur}
-        />
-        {priceError && <div style={{ color: 'red', fontSize: '0.875rem' }}>{priceError}</div>}
-      </div>
-      <div>
-        <input
-          type="number"
-          placeholder="Máximo de dias de aluguel"
-          value={days}
-          onChange={handleDaysChange}
-          onBlur={handleDaysBlur}
-          min={1}
-          step={1}
-        />
-        {daysError && <div style={{ color: 'red', fontSize: '0.875rem' }}>{daysError}</div>}
-      </div>
-      <label htmlFor="category">Categoria: </label>
-      <select name="category" id="category" onChange={(e) => setCategoryId(e.target.value)} value={categoryId}>
-        {categories.map((category) => (
-          <option key={category.category_id} value={category.category_id}>
-            {category.name}
-          </option>
-        ))}
-      </select>
-      <ImageUploader name={name} price={price} desc={desc} categoryId={categoryId} />
+    <main className="upProductContainer">
+      <section className="upProductCard">
+        <div className="upProductHeader">
+          <h2>Publicar produto</h2>
+          <p>Adicione informações e fotos para compartilhar o item com a comunidade.</p>
+        </div>
+
+        <div className="fieldGroup">
+          <label htmlFor="productName">Nome do produto</label>
+          <input
+            id="productName"
+            type="text"
+            placeholder="Nome do produto"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
+
+        <div className="fieldGroup">
+          <label htmlFor="productDesc">Descrição do produto</label>
+          <textarea
+            id="productDesc"
+            placeholder="Descrição do produto"
+            value={desc}
+            onChange={(e) => setDesc(e.target.value)}
+          />
+        </div>
+
+        <div className="gridRow">
+          <div className="fieldGroup">
+            <label htmlFor="price">Preço diário do aluguel</label>
+            <input
+              id="price"
+              type="text"
+              placeholder="123,45"
+              value={price}
+              onChange={handlePriceChange}
+              onBlur={handlePriceBlur}
+            />
+            {priceError && <p className="fieldError">{priceError}</p>}
+          </div>
+
+          <div className="fieldGroup">
+            <label htmlFor="days">Máximo de dias de aluguel</label>
+            <input
+              id="days"
+              type="number"
+              placeholder="30"
+              value={days}
+              onChange={handleDaysChange}
+              onBlur={handleDaysBlur}
+              min={1}
+              step={1}
+            />
+            {daysError && <p className="fieldError">{daysError}</p>}
+          </div>
+        </div>
+
+        <div className="fieldGroup">
+          <label htmlFor="category">Categoria</label>
+          <select
+            name="category"
+            id="category"
+            onChange={(e) => setCategoryId(e.target.value)}
+            value={categoryId}
+          >
+            <option value="">Selecione uma categoria</option>
+            {categories.map((category) => (
+              <option key={category.category_id} value={category.category_id}>
+                {category.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="fieldNote">Preencha todos os dados e adicione imagens claras para aumentar a visibilidade do produto.</div>
+
+        <ImageUploader name={name} price={price} desc={desc} categoryId={categoryId} />
+      </section>
     </main>
   );
 }

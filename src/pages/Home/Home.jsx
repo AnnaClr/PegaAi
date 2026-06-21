@@ -1,5 +1,4 @@
 import { useNavigate } from 'react-router-dom';
-import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import ProductCard from '../../components/ProductCard';
 import Carousel from '../../components/Carousel';
@@ -23,7 +22,6 @@ export default function Home() {
 
   return (
     <>
-      <Header />
       <main>
         <section className={styles.hero}>
           <div className={styles.container}>
