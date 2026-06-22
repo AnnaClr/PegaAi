@@ -9,7 +9,7 @@ export default function Home() {
   const navigate = useNavigate();
 
   const handleRent = (productId) => {
-    navigate(`/product/${productId}`);
+    navigate(`/product/view/${productId}`);
   };
 
   const handleAnnounce = () => {

@@ -14,7 +14,7 @@ import {
 } from './ImageUploader.helpers';
 import './ImageUploader.css';
 
-function ImageUploader({ name, desc, categoryId, price, days }) {
+function ImageUploader({ name, desc, categoryId, price, days, onComplete }) {
   const [images, setImages] = useState([]);
   const [uploading, setUploading] = useState(false);
   const [productId, setProductId] = useState(null);
@@ -86,7 +86,11 @@ function ImageUploader({ name, desc, categoryId, price, days }) {
 
       if (urls.length > 0) {
         await saveImageUrlsToDatabase(urls, activeProductId);
-       
+      }
+
+      // notify parent that product (and images) were saved
+      if (typeof onComplete === 'function') {
+        try { onComplete(activeProductId); } catch (e) { console.warn('onComplete handler error', e); }
       }
 
     } catch (error) {

@@ -30,6 +30,7 @@ export default function Header() {
           <Link to="/"><span className={styles.linkText}>Página Inicial</span></Link>
           <Link to="/explorer"><span className={styles.linkText}>Explorar</span></Link>
           <Link to="/products/rentals"><span className={styles.linkText}>Produtos Alugadoss</span></Link>
+          <Link to="/product/up"><span className={styles.linkText}>Cadastrar Produto</span></Link>
           <Link to="/products/my"><span className={styles.linkText}>Meus Produtos</span></Link>
           <Link to="/cart"><FaShoppingCart size={20} /></Link>
           <Link to="/login" className={styles.entrarBtn} style={{display: verifyLogin()? 'none' : ''}} >Entrar</Link>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { 
   FaCreditCard,
@@ -13,38 +13,34 @@ import {
 import { SiMercadopago, SiPicpay } from 'react-icons/si';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
-import { allProducts, categories } from '../../data/mockData';
+import api from '../../utils/axios';
 import styles from './cart.module.css';
 
 export default function Cart() {
   const navigate = useNavigate();
 
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      product_id: 1,
-      startDate: '',
-      endDate: '',
-      days: 0
-    },
-    {
-      id: 2,
-      product_id: 2,
-      startDate: '',
-      endDate: '',
-      days: 0
+  const [cartItems, setCartItems] = useState(() => {
+    try {
+      const raw = localStorage.getItem('cart');
+      return raw ? JSON.parse(raw) : [];
+    } catch (err) {
+      console.error('Erro ao ler carrinho do localStorage', err);
+      return [];
     }
-  ]);
+  });
+
+  const [products, setProducts] = useState([]);
+  const [categoriesList, setCategoriesList] = useState([]);
 
   const [paymentMethod, setPaymentMethod] = useState('card');
   const [periodErrors, setPeriodErrors] = useState({});
 
   const getProductById = (productId) => {
-    return allProducts.find(p => p.product_id === productId);
+    return products.find(p => Number(p.product_id) === Number(productId));
   };
 
   const getCategoryName = (categoryId) => {
-    const category = categories.find(c => c.id === categoryId);
+    const category = categoriesList.find(c => Number(c.category_id) === Number(categoryId));
     return category ? category.name : '';
   };
 
@@ -97,20 +93,21 @@ export default function Cart() {
       return;
     }
     
-    navigate('/checkout', { 
-      state: { 
+    navigate('/checkout', {
+      state: {
         paymentMethod: paymentMethod,
         cartItems: cartItems
-      } 
+      }
     });
   };
 
   const cartItemsWithDetails = cartItems.map(item => {
     const product = getProductById(item.product_id);
+    const price = Number(product?.price_per_day ?? product?.price ?? 0);
     return {
       ...item,
       ...product,
-      total: product ? product.price_per_day * item.days : 0
+      total: price * (item.days || 0)
     };
   });
 
@@ -126,6 +123,73 @@ export default function Cart() {
   };
 
   const today = new Date().toISOString().split('T')[0];
+
+  useEffect(() => {
+    // persist cart to localStorage
+    try {
+      localStorage.setItem('cart', JSON.stringify(cartItems));
+    } catch (err) {
+      console.error('Falha ao salvar o carrinho', err);
+    }
+  }, [cartItems]);
+
+  useEffect(() => {
+    let mounted = true;
+    const load = async () => {
+      try {
+        const ids = cartItems.map(i => i.product_id).filter(Boolean);
+        // always fetch categories
+        const catsPromise = api.get('/categories');
+
+        if (ids.length > 0) {
+          // fetch products and images for these ids
+          const [prodResp, imgsResp, catsResp] = await Promise.all([
+            api.get(`/products?product_id=in.(${ids.join(',')})`),
+            api.get(`/product_images?product_id=in.(${ids.join(',')})`),
+            catsPromise
+          ]);
+          if (!mounted) return;
+
+          const prods = prodResp.data || [];
+          const imgs = imgsResp.data || [];
+
+          // map images by product_id and pick first image_url
+          const imgsByProduct = imgs.reduce((acc, im) => {
+            const id = im.product_id ?? im.productId ?? im.product_id;
+            if (!acc[id]) acc[id] = [];
+            acc[id].push(im.image_url ?? im.url ?? im.imageUrl ?? im.image_url);
+            return acc;
+          }, {});
+
+          const mapped = prods.map(p => {
+            const id = p.product_id ?? p.id;
+            const productImages = imgsByProduct[id] ?? [];
+            const firstImage = productImages[0] ?? null;
+            return {
+              ...p,
+              images: productImages,
+              first_image_url: firstImage,
+              image: firstImage ?? p.image ?? p.image_url ?? 'https://via.placeholder.com/320x220?text=Sem+imagem'
+            };
+          });
+
+          setProducts(mapped);
+
+          if (!mounted) return;
+          setCategoriesList(catsResp.data || []);
+        } else {
+          const catsResp = await catsPromise;
+          if (!mounted) return;
+          setProducts([]);
+          setCategoriesList(catsResp.data || []);
+        }
+      } catch (err) {
+        console.error('Erro ao carregar produtos do carrinho', err.response?.data || err.message || err);
+      }
+    };
+    load();
+    return () => { mounted = false; };
+  }, [cartItems]);
 
   return (
     <>
@@ -164,7 +228,7 @@ export default function Cart() {
                             <h3>{product.name}</h3>
                             <p className={styles.itemCategory}>{getCategoryName(product.category_id)}</p>
                             <div className={styles.itemPriceInfo}>
-                              <span className={styles.itemPrice}>R$ {product.price_per_day.toFixed(2)} / dia</span>
+                              <span className={styles.itemPrice}>R$ {Number(product.price_per_day ?? product.price ?? 0).toFixed(2)} / dia</span>
                               {item.days > 0 && (
                                 <span className={styles.itemTotalPrice}>R$ {item.total.toFixed(2)}</span>
                               )}

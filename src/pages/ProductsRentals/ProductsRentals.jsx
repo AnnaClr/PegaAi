@@ -24,7 +24,17 @@ export default function ProductsRentals() {
       setLoading(true);
       const storedUser = localStorage.getItem('user');
       const userIdFromLocal = localStorage.getItem('userId');
-      const userId = userIdFromLocal ?? (storedUser ? (JSON.parse(storedUser).id ?? null) : null);
+      let userId = null;
+      if (userIdFromLocal) userId = userIdFromLocal;
+      else if (storedUser) {
+        try {
+          const parsed = JSON.parse(storedUser);
+          userId = parsed?.user_id ?? parsed?.id ?? parsed?.userId ?? null;
+        } catch (err) {
+          console.error('Erro ao parsear usuário do localStorage', err);
+          userId = null;
+        }
+      }
       if (!userId) {
         setRentals([]);
         setLoading(false);
@@ -56,11 +66,11 @@ export default function ProductsRentals() {
       ) : (
         <div className={styles.grid}>
           {rentals.map((rental, idx) => {
-            const product = rental?.product ?? null;
-            const productName = product?.name ?? product?.title ?? 'Produto indisponível';
-            const image = product?.image ?? product?.image_url ?? (product?.images && product.images[0]?.image_url) ?? 'https://via.placeholder.com/320x220?text=Sem+imagem';
-            const startDate = parseDate(rental.start_date ?? rental.startDate ?? rental.start_at ?? rental.start);
-            const endDate = parseDate(rental.end_date ?? rental.endDate ?? rental.end_at ?? rental.end);
+              const product = rental?.product ?? null;
+              const productName = product?.name ?? product?.title ?? 'Produto indisponível';
+              const image = product?.first_image_url ?? product?.image ?? product?.image_url ?? (product?.images && product.images[0]) ?? 'https://via.placeholder.com/320x220?text=Sem+imagem';
+              const startDate = parseDate(rental.start_rental ?? rental.start_date ?? rental.startDate ?? rental.start_at ?? rental.start);
+              const endDate = parseDate(rental.end_rental ?? rental.end_date ?? rental.endDate ?? rental.end_at ?? rental.end);
             const daysElapsed = startDate ? Math.floor((now - startDate) / (1000 * 60 * 60 * 24)) + 1 : 0;
             const plannedDays = startDate && endDate ? diffDays(startDate, endDate) : null;
             const maxDays = product?.max_days ?? product?.maxDays ?? 0;
@@ -76,7 +86,7 @@ export default function ProductsRentals() {
                   <h3 className={styles.productName}>{productName}</h3>
                   <div className={styles.meta}>
                     <span className={styles.category}>{product?.category ?? '—'}</span>
-                    <div className={styles.price}>R$ {product?.price_per_day ?? product?.price ?? '—'}<span className={styles.pDay}>/dia</span></div>
+                    <div className={styles.price}>R$ {product ? Number(product.price_per_day ?? product.price ?? 0).toFixed(2) : '—'}<span className={styles.pDay}>/dia</span></div>
                   </div>
 
                   <div className={styles.dates}>

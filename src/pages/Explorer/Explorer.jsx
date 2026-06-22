@@ -3,19 +3,17 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { 
   FaSearch, 
   FaFilter, 
-  FaStar, 
-  FaRegStar,
   FaUndo,
-  FaStarHalfAlt,
   FaTimes
 } from 'react-icons/fa';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import ProductCard from '../../components/ProductCard';
-import { categories, featuredProducts, recommendedProducts } from '../../data/mockData';
+import api from '../../utils/axios';
 import styles from './explorer.module.css';
 
 const FiltersContent = ({
+  categories,
   selectedCategories,
   handleCategoryChange,
   clearFilters,
@@ -27,9 +25,6 @@ const FiltersContent = ({
   handleSliderEnd,
   maxPrice,
   percentage,
-  minRating,
-  handleRatingClick,
-  renderStars,
 }) => (
   <>
     <div className={styles.filtersHeader}>
@@ -53,11 +48,11 @@ const FiltersContent = ({
     <div className={styles.filterSection}>
       <h4>Categorias</h4>
       {categories.map(category => (
-        <label key={category.id}>
+        <label key={category.category_id}>
           <input 
             type="checkbox" 
-            checked={selectedCategories.includes(category.id)}
-            onChange={() => handleCategoryChange(category.id)}
+            checked={selectedCategories.includes(Number(category.category_id))}
+            onChange={() => handleCategoryChange(Number(category.category_id))}
           />
           {category.name}
         </label>
@@ -94,17 +89,7 @@ const FiltersContent = ({
       </div>
     </div>
     
-    <div className={styles.filterSection}>
-      <h4>Avaliação</h4>
-      <div className={styles.ratingFilter}>
-        <div 
-          className={`${styles.ratingOption} ${minRating === 4 ? styles.active : ''}`}
-          onClick={() => handleRatingClick(4)}
-        >
-          {renderStars(4, true)} <span>4+ estrelas</span>
-        </div>
-      </div>
-    </div>
+    {/* Avaliações removidas do filtro */}
   </>
 );
 
@@ -113,8 +98,10 @@ export default function Explorer() {
   const [searchParams] = useSearchParams();
   const sliderRef = useRef(null);
   const isDraggingRef = useRef(false);
-  
-  const allProducts = useMemo(() => [...featuredProducts, ...recommendedProducts], []);
+  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+
+  const allProducts = useMemo(() => products, [products]);
   
   const categoryParam = searchParams.get('categoria');
   const initialCategoryId = categoryParam ? parseInt(categoryParam) : null;
@@ -125,7 +112,6 @@ export default function Explorer() {
     initialCategoryId ? [initialCategoryId] : []
   );
   const [maxPrice, setMaxPrice] = useState(500);
-  const [minRating, setMinRating] = useState(0);
   const [showFilters, setShowFilters] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 992);
 
@@ -141,15 +127,13 @@ export default function Explorer() {
 
     if (selectedCategories.length > 0) {
       results = results.filter(product => 
-        selectedCategories.includes(product.category_id)
+        selectedCategories.includes(Number(product.category_id))
       );
     }
 
-    results = results.filter(product => product.price_per_day <= maxPrice);
+    results = results.filter(product => Number(product.price_per_day ?? product.price ?? 0) <= maxPrice);
 
-    if (minRating > 0) {
-      results = results.filter(product => product.rating >= minRating);
-    }
+    // rating filter removed
 
     switch (sortBy) {
       case 'lowest':
@@ -163,7 +147,55 @@ export default function Explorer() {
     }
 
     return results;
-  }, [allProducts, searchTerm, sortBy, selectedCategories, maxPrice, minRating]);
+  }, [allProducts, searchTerm, sortBy, selectedCategories, maxPrice]);
+
+  useEffect(() => {
+    let mounted = true;
+    const load = async () => {
+      try {
+        const [prodResp, catsResp, imgsResp] = await Promise.all([
+          api.get('/products'),
+          api.get('/categories'),
+          api.get('/product_images')
+        ]);
+
+        if (!mounted) return;
+
+        const prods = prodResp.data ?? [];
+        const cats = catsResp.data ?? [];
+        const imgs = imgsResp.data ?? [];
+
+        // map images by product_id
+        const imgsByProduct = imgs.reduce((acc, im) => {
+          const id = im.product_id ?? im.productId ?? im.product_id;
+          if (!acc[id]) acc[id] = [];
+          acc[id].push(im.image_url ?? im.url ?? im.imageUrl ?? im.image_url);
+          return acc;
+        }, {});
+
+        const mapped = prods.map(p => {
+          const id = p.product_id ?? p.id;
+          const productImages = imgsByProduct[id] ?? [];
+          const firstImage = productImages[0] ?? null;
+          const category = cats.find(c => Number(c.category_id) === Number(p.category_id));
+          return {
+            ...p,
+            images: productImages,
+            first_image_url: firstImage,
+            image: firstImage ?? p.image ?? p.image_url ?? 'https://via.placeholder.com/320x220?text=Sem+imagem',
+            category: category?.name ?? ''
+          };
+        });
+
+        setProducts(mapped);
+        setCategories(cats);
+      } catch (err) {
+        console.error('Failed to load explorer data', err.response?.data || err.message || err);
+      }
+    };
+    load();
+    return () => { mounted = false; };
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -177,7 +209,7 @@ export default function Explorer() {
   }, []);
 
   const handleRent = (productId) => {
-    navigate(`/product/${productId}`);
+    navigate(`/product/view/${productId}`);
   };
 
   const handleCategoryChange = (categoryId) => {
@@ -193,15 +225,6 @@ export default function Explorer() {
     setSortBy('relevance');
     setSelectedCategories([]);
     setMaxPrice(500);
-    setMinRating(0);
-  };
-
-  const handleRatingClick = (rating) => {
-    if (minRating === rating) {
-      setMinRating(0);
-    } else {
-      setMinRating(rating);
-    }
   };
 
   const handleSliderStart = (e) => {
@@ -225,44 +248,10 @@ export default function Explorer() {
     isDraggingRef.current = false;
   };
 
-  const renderStars = (count, interactive = false) => {
-    const stars = [];
-    const fullStars = Math.floor(count);
-    const hasHalfStar = count % 1 !== 0;
-    
-    for (let i = 0; i < fullStars; i++) {
-      stars.push(
-        <FaStar 
-          key={i} 
-          className={interactive ? styles.starInteractive : styles.starIcon} 
-          onClick={interactive ? () => handleRatingClick(count) : undefined}
-        />
-      );
-    }
-    if (hasHalfStar) {
-      stars.push(
-        <FaStarHalfAlt 
-          key="half" 
-          className={interactive ? styles.starInteractive : styles.starIcon}
-          onClick={interactive ? () => handleRatingClick(count) : undefined}
-        />
-      );
-    }
-    const remaining = 5 - stars.length;
-    for (let i = 0; i < remaining; i++) {
-      stars.push(
-        <FaRegStar 
-          key={`empty-${i}`} 
-          className={interactive ? styles.starInteractive : styles.starIcon}
-          onClick={interactive ? () => handleRatingClick(count) : undefined}
-        />
-      );
-    }
-    return stars;
-  };
+  // rating UI/helpers removed
 
   const getCategoryName = (categoryId) => {
-    const category = categories.find(c => c.id === categoryId);
+    const category = categories.find(c => Number(c.category_id) === Number(categoryId));
     return category ? category.name : '';
   };
 
@@ -276,6 +265,7 @@ export default function Explorer() {
           {!isMobile && (
             <aside className={styles.filtersSidebar}>
               <FiltersContent
+                categories={categories}
                 selectedCategories={selectedCategories}
                 handleCategoryChange={handleCategoryChange}
                 clearFilters={clearFilters}
@@ -287,9 +277,6 @@ export default function Explorer() {
                 handleSliderEnd={handleSliderEnd}
                 maxPrice={maxPrice}
                 percentage={percentage}
-                minRating={minRating}
-                handleRatingClick={handleRatingClick}
-                renderStars={renderStars}
               />
             </aside>
           )}
@@ -317,9 +304,9 @@ export default function Explorer() {
                   >
                     <FaFilter />
                     <span>Filtros</span>
-                    {(selectedCategories.length > 0 || minRating > 0) && (
+                    {selectedCategories.length > 0 && (
                       <span className={styles.filterBadge}>
-                        {selectedCategories.length + (minRating > 0 ? 1 : 0)}
+                        {selectedCategories.length}
                       </span>
                     )}
                   </button>
@@ -337,18 +324,13 @@ export default function Explorer() {
             
             <div className={styles.resultsInfo}>
               <span>{filteredProducts.length} produtos encontrados</span>
-              {(selectedCategories.length > 0 || minRating > 0) && (
+              {selectedCategories.length > 0 && (
                 <div className={styles.activeFilters}>
                   {selectedCategories.map(id => (
                     <span key={id} className={styles.filterTag}>
                       {getCategoryName(id)}
                     </span>
                   ))}
-                  {minRating > 0 && (
-                    <span className={styles.filterTag}>
-                      {minRating}+ estrelas
-                    </span>
-                  )}
                 </div>
               )}
             </div>
@@ -374,6 +356,7 @@ export default function Explorer() {
           <div className={styles.filtersOverlay} onClick={() => setShowFilters(false)}>
             <div className={styles.filtersModal} onClick={(e) => e.stopPropagation()}>
               <FiltersContent
+                categories={categories}
                 selectedCategories={selectedCategories}
                 handleCategoryChange={handleCategoryChange}
                 clearFilters={clearFilters}
@@ -385,9 +368,6 @@ export default function Explorer() {
                 handleSliderEnd={handleSliderEnd}
                 maxPrice={maxPrice}
                 percentage={percentage}
-                minRating={minRating}
-                handleRatingClick={handleRatingClick}
-                renderStars={renderStars}
               />
             </div>
           </div>

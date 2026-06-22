@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ImageUploader from './components aux/ImageUploader';
 import api from '../../utils/axios';
 import './UpProduct.css';
 
 export default function UpProduct() {
+  const navigate = useNavigate();
   const [name, setName] = useState('');
   const [desc, setDesc] = useState('');
   const [categories, setCategories] = useState([]);
@@ -137,7 +139,14 @@ export default function UpProduct() {
 
         <div className="fieldNote">Preencha todos os dados e adicione imagens claras para aumentar a visibilidade do produto.</div>
 
-        <ImageUploader name={name} price={price} desc={desc} categoryId={categoryId} />
+        <ImageUploader
+          name={name}
+          price={price}
+          desc={desc}
+          categoryId={categoryId}
+          days={days}
+          onComplete={() => navigate('/products/my')}
+        />
       </section>
     </main>
   );

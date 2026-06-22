@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { 
   FaCreditCard, 
@@ -10,33 +10,30 @@ import {
 import { SiMercadopago, SiPicpay } from 'react-icons/si';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
-import { allProducts } from '../../data/mockData';
+import api from '../../utils/axios';
 import styles from './checkout.module.css';
 
 export default function Checkout() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const cartItemsFromState = location.state?.cartItems || [
-    {
-      id: 1,
-      product_id: 1,
-      startDate: "05/04",
-      endDate: "08/04",
-      days: 3
-    },
-    {
-      id: 2,
-      product_id: 2,
-      startDate: "06/04",
-      endDate: "07/04",
-      days: 2
+  const fromState = location.state?.cartItems;
+  const fromStorage = (() => {
+    try {
+      const raw = localStorage.getItem('cart');
+      return raw ? JSON.parse(raw) : [];
+    } catch (e) {
+      console.error('Erro ao ler carrinho do localStorage', e);
+      return [];
     }
-  ];
+  })();
+  const cartItemsFromState = fromState ?? fromStorage;
 
   const initialPaymentMethod = location.state?.paymentMethod || 'card';
   
-  const [cartItems] = useState(cartItemsFromState);
+  const [cartItemsState, setCartItemsState] = useState(cartItemsFromState);
+  const [periodErrors, setPeriodErrors] = useState({});
+  const [products, setProducts] = useState([]);
   const [paymentMethod, setPaymentMethod] = useState(initialPaymentMethod);
   const [step, setStep] = useState(1);
   const [isConfirmed, setIsConfirmed] = useState(false);
@@ -50,12 +47,91 @@ export default function Checkout() {
   });
 
   const getProductById = (productId) => {
-    return allProducts.find(p => p.product_id === productId);
+    return products.find(p => Number(p.product_id) === Number(productId));
   };
 
   const handleCardChange = (e) => {
     const { name, value } = e.target;
     setCardData(prev => ({ ...prev, [name]: value }));
+  };
+
+  useEffect(() => {
+    let mounted = true;
+    const load = async () => {
+      try {
+        const ids = cartItemsState.map(i => i.product_id).filter(Boolean);
+        if (ids.length > 0) {
+          const [prodResp, imgsResp] = await Promise.all([
+            api.get(`/products?product_id=in.(${ids.join(',')})`),
+            api.get(`/product_images?product_id=in.(${ids.join(',')})`)
+          ]);
+          if (!mounted) return;
+
+          const prods = prodResp.data || [];
+          const imgs = imgsResp.data || [];
+
+          const imgsByProduct = imgs.reduce((acc, im) => {
+            const id = im.product_id ?? im.productId ?? im.product_id;
+            if (!acc[id]) acc[id] = [];
+            acc[id].push(im.image_url ?? im.url ?? im.imageUrl ?? im.image_url);
+            return acc;
+          }, {});
+
+          const mapped = prods.map(p => {
+            const id = p.product_id ?? p.id;
+            const productImages = imgsByProduct[id] ?? [];
+            const firstImage = productImages[0] ?? null;
+            return {
+              ...p,
+              images: productImages,
+              first_image_url: firstImage,
+              image: firstImage ?? p.image ?? p.image_url ?? 'https://via.placeholder.com/320x220?text=Sem+imagem'
+            };
+          });
+
+          setProducts(mapped);
+        } else {
+          setProducts([]);
+        }
+      } catch (err) {
+        console.error('Erro ao carregar produtos para checkout', err.response?.data || err.message || err);
+      }
+    };
+    load();
+    return () => { mounted = false; };
+  }, [cartItemsState]);
+
+  const handleDateChangeInCheckout = (itemId, field, value) => {
+    setCartItemsState(prev => prev.map(item => {
+      if (item.id !== itemId) return item;
+      const updatedItem = { ...item, [field]: value };
+
+      if (updatedItem.startDate && updatedItem.endDate) {
+        const start = new Date(updatedItem.startDate);
+        const end = new Date(updatedItem.endDate);
+        const diffTime = Math.abs(end - start);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+        if (diffDays === 0) {
+          setPeriodErrors(prev => ({ ...prev, [itemId]: 'Selecione pelo menos 1 dia' }));
+          return { ...updatedItem, days: 0 };
+        }
+
+        const product = products.find(p => Number(p.product_id) === Number(updatedItem.product_id));
+        if (product && diffDays > product.max_days) {
+          setPeriodErrors(prev => ({ ...prev, [itemId]: `Máximo de ${product.max_days} dias` }));
+          return { ...updatedItem, days: 0 };
+        }
+
+        setPeriodErrors(prev => {
+          const copy = { ...prev };
+          delete copy[itemId];
+          return copy;
+        });
+        return { ...updatedItem, days: diffDays };
+      }
+      return updatedItem;
+    }));
   };
 
   const handleNextStep = () => {
@@ -68,23 +144,67 @@ export default function Checkout() {
     if (step > 1) {
       setStep(step - 1);
     } else {
-      navigate('/carrinho');
+      navigate('/cart');
     }
   };
 
-  const handleConfirmOrder = () => {
-    setIsConfirmed(true);
-    setTimeout(() => {
-      navigate('/');
-    }, 4000);
+  const handleConfirmOrder = async () => {
+    // validate
+    const itemsToConfirm = cartItemsState.filter(i => i.days > 0);
+    if (itemsToConfirm.length === 0) {
+      alert('Nenhum período válido para confirmar');
+      return;
+    }
+
+    const rawUser = localStorage.getItem('user');
+    if (!rawUser) {
+      // require login
+      navigate('/login');
+      return;
+    }
+    const user = JSON.parse(rawUser);
+
+    // prepare payload for rentals table
+    const rentals = itemsToConfirm.map(item => ({
+      user_id: user.user_id ?? user.id ?? user.userId,
+      product_id: item.product_id,
+      start_rental: item.startDate,
+      end_rental: item.endDate
+    }));
+
+    try {
+      // insert rentals
+      await api.post('/rentals', rentals);
+
+      // remove confirmed items from localStorage cart
+      try {
+        const raw = localStorage.getItem('cart');
+        if (raw) {
+          const existing = JSON.parse(raw);
+          const remaining = existing.filter(e => !itemsToConfirm.find(c => Number(c.product_id) === Number(e.product_id)));
+          localStorage.setItem('cart', JSON.stringify(remaining));
+        }
+      } catch (err) {
+        console.warn('Não foi possível atualizar o carrinho no localStorage', err);
+      }
+
+      setIsConfirmed(true);
+      setTimeout(() => {
+        navigate('/');
+      }, 3000);
+    } catch (err) {
+      console.error('Erro ao criar rentals', err.response?.data || err.message || err);
+      alert('Erro ao processar o pedido. Tente novamente.');
+    }
   };
 
-  const cartItemsWithDetails = cartItems.map(item => {
+  const cartItemsWithDetails = cartItemsState.map(item => {
     const product = getProductById(item.product_id);
+    const price = Number(product?.price_per_day ?? product?.price ?? 0);
     return {
       ...item,
       ...product,
-      total: product ? product.price_per_day * item.days : 0
+      total: price * (item.days || 0)
     };
   });
 
@@ -330,14 +450,31 @@ export default function Checkout() {
             {step === 2 && (
               <div className={styles.reviewSection}>
                 <h3>Revisão do pedido</h3>
-                
+
                 {cartItemsWithDetails.map(item => (
                   <div key={item.id} className={styles.reviewItem}>
                     <img src={item.image} alt={item.name} />
                     <div className={styles.reviewItemInfo}>
                       <h4>{item.name}</h4>
-                      <p>{item.days} dias · {item.startDate} a {item.endDate}</p>
+                      <div className={styles.reviewDates}>
+                        <label>Início</label>
+                        <input
+                          type="date"
+                          value={item.startDate}
+                          onChange={(e) => handleDateChangeInCheckout(item.id, 'startDate', e.target.value)}
+                          min={new Date().toISOString().split('T')[0]}
+                        />
+                        <label>Fim</label>
+                        <input
+                          type="date"
+                          value={item.endDate}
+                          onChange={(e) => handleDateChangeInCheckout(item.id, 'endDate', e.target.value)}
+                          min={item.startDate || new Date().toISOString().split('T')[0]}
+                        />
+                      </div>
+                      <p>{item.days} {item.days === 1 ? 'dia' : 'dias'} · {item.startDate || '—'} a {item.endDate || '—'}</p>
                       <span>{formatCurrency(item.total)}</span>
+                      {periodErrors[item.id] && <div className={styles.errorMessage}>{periodErrors[item.id]}</div>}
                     </div>
                   </div>
                 ))}

@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { getProduct, getProductImages } from './ViewProduct.helpers';
 import SimpleImageSlider from 'react-simple-image-slider';
 import './ViewProduct.css';
 
 export default function ViewProduct() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [images, setImages] = useState([]);
   const [user, setUser] = useState(null);
@@ -43,6 +44,44 @@ export default function ViewProduct() {
       mounted = false;
     };
   }, [id]);
+
+  const addToCart = () => {
+    if (!product) return;
+    try {
+      const raw = localStorage.getItem('cart');
+      const cart = raw ? JSON.parse(raw) : [];
+      const exists = cart.find(item => Number(item.product_id) === Number(product.product_id));
+      if (exists) {
+        // already in cart, go to cart
+        navigate('/cart');
+        return;
+      }
+      const newItem = {
+        id: Date.now(),
+        product_id: product.product_id,
+        startDate: '',
+        endDate: '',
+        days: 0
+      };
+      cart.push(newItem);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      navigate('/cart');
+    } catch (err) {
+      console.error('Erro ao adicionar ao carrinho', err);
+    }
+  };
+
+  const requestRent = () => {
+    if (!product) return;
+    const item = {
+      id: Date.now(),
+      product_id: product.product_id,
+      startDate: '',
+      endDate: '',
+      days: 0
+    };
+    navigate('/checkout', { state: { cartItems: [item], paymentMethod: 'card' } });
+  };
 
   return (
     <main className="view-product">
@@ -92,8 +131,8 @@ export default function ViewProduct() {
               <div className="purchase-row">
                 <div className="price">R$ {product.price_per_day ?? '—'}<span className='p-day'>  /dia</span></div>
                 <div className="actions">
-                  <button className="btn btn-primary">Solicitar aluguel</button>
-                  <button className="btn btn-outline">Adicionar ao carrinho</button>
+                  <button className="btn btn-primary" onClick={requestRent}>Solicitar aluguel</button>
+                  <button className="btn btn-outline" onClick={addToCart}>Adicionar ao carrinho</button>
                 </div>
               </div>
             </div>
