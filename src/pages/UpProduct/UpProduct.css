@@ -112,7 +112,6 @@
   }
 }
 
-/* Upload actions buttons */
 .upload-actions {
   display: flex;
   justify-content: flex-end;
@@ -179,4 +178,3 @@
     min-width: 140px;
   }
 }
-

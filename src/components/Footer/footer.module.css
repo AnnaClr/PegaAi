@@ -1,8 +1,7 @@
 .footer {
-  background: #161127;
-  color: #D1D5DB;
+  background: var(--footer-bg);
+  color: var(--footer-text);
   padding-top: 60px;
-  margin-top: 60px;
   position: relative;
 }
 
@@ -27,7 +26,7 @@
 }
 
 .logoAi {
-  color: #8B5CF6;
+  color: var(--primary-light);
 }
 
 .logoPlus {
@@ -46,7 +45,7 @@
 .footerBrand p {
   line-height: 1.6;
   margin-bottom: 25px;
-  color: #9CA3AF;
+  color: var(--text-light);
   font-size: 0.9rem;
 }
 
@@ -64,13 +63,13 @@
   height: 38px;
   background: rgba(139, 92, 246, 0.15);
   border-radius: 50%;
-  color: #D1D5DB;
+  color: var(--footer-text);
   font-size: 1.1rem;
   transition: all 0.3s ease;
 }
 
 .socialLink:hover {
-  background: #8B5CF6;
+  background: var(--primary-light);
   color: white;
   transform: translateY(-3px);
 }
@@ -91,7 +90,7 @@
   left: 0;
   width: 35px;
   height: 2px;
-  background: #8B5CF6;
+  background: var(--primary-light);
   border-radius: 2px;
 }
 
@@ -106,14 +105,14 @@
 
 .footerLinks a {
   text-decoration: none;
-  color: #9CA3AF;
+  color: var(--text-light);
   transition: all 0.3s ease;
   display: inline-block;
   font-size: 0.9rem;
 }
 
 .footerLinks a:hover {
-  color: #8B5CF6;
+  color: var(--primary-light);
   transform: translateX(5px);
 }
 
@@ -122,7 +121,7 @@
   padding: 25px 0;
   text-align: center;
   font-size: 0.85rem;
-  color: #9CA3AF;
+  color: var(--text-light);
 }
 
 @media (max-width: 968px) {

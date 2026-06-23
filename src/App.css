@@ -8,8 +8,8 @@
 
 body {
   font-family: 'Inter', sans-serif;
-  background: #F9FAFB;
-  color: #111827;
+  background: var(--bg-primary);
+  color: var(--text-primary);
   line-height: 1.5;
   overflow-x: hidden;
 }
@@ -23,12 +23,12 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #5e17eb, #8B5CF6);
+  background: linear-gradient(135deg, var(--primary-darker), var(--primary-light));
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, #4a12bc, #7C3AED);
+  background: linear-gradient(135deg, #4a12bc, var(--primary));
 }
 
 html {
@@ -36,12 +36,12 @@ html {
 }
 
 ::selection {
-  background: #5e17eb;
+  background: var(--primary-darker);
   color: white;
 }
 
 ::-moz-selection {
-  background: #5e17eb;
+  background: var(--primary-darker);
   color: white;
 }
 
@@ -50,7 +50,7 @@ html {
 }
 
 :focus-visible {
-  outline: 2px solid #5e17eb;
+  outline: 2px solid var(--primary-darker);
   outline-offset: 2px;
 }
 
@@ -127,7 +127,7 @@ img {
 }
 
 .skeleton {
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background: linear-gradient(90deg, var(--bg-hover) 25%, var(--border-color) 50%, var(--bg-hover) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
 }

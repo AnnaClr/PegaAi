@@ -137,7 +137,9 @@ export default function UpProduct() {
           </select>
         </div>
 
-        <div className="fieldNote">Preencha todos os dados e adicione imagens claras para aumentar a visibilidade do produto.</div>
+        <div className="fieldNote">
+          Preencha todos os dados e adicione imagens claras para aumentar a visibilidade do produto.
+        </div>
 
         <ImageUploader
           name={name}

@@ -1,5 +1,5 @@
-import  { useRef, useState, useEffect } from 'react';
-import styles from './carousel.module.css';
+import { useRef, useState, useEffect } from "react";
+import styles from "./carousel.module.css";
 
 export default function Carousel({ children }) {
   const scrollContainerRef = useRef(null);
@@ -13,13 +13,14 @@ export default function Carousel({ children }) {
     const container = scrollContainerRef.current;
     if (container) {
       const scrollAmount = container.clientWidth * 0.8;
-      const newScrollLeft = direction === 'left' 
-        ? container.scrollLeft - scrollAmount 
-        : container.scrollLeft + scrollAmount;
-      
+      const newScrollLeft =
+        direction === "left"
+          ? container.scrollLeft - scrollAmount
+          : container.scrollLeft + scrollAmount;
+
       container.scrollTo({
         left: newScrollLeft,
-        behavior: 'smooth'
+        behavior: "smooth",
       });
     }
   };
@@ -29,7 +30,8 @@ export default function Carousel({ children }) {
     if (container) {
       setShowLeftArrow(container.scrollLeft > 0);
       setShowRightArrow(
-        container.scrollLeft < container.scrollWidth - container.clientWidth - 10
+        container.scrollLeft <
+          container.scrollWidth - container.clientWidth - 10,
       );
     }
   };
@@ -55,11 +57,11 @@ export default function Carousel({ children }) {
   useEffect(() => {
     const container = scrollContainerRef.current;
     if (container) {
-      container.addEventListener('scroll', checkScrollButtons);
+      container.addEventListener("scroll", checkScrollButtons);
       checkScrollButtons();
-      
+
       return () => {
-        container.removeEventListener('scroll', checkScrollButtons);
+        container.removeEventListener("scroll", checkScrollButtons);
       };
     }
   }, []);
@@ -68,36 +70,31 @@ export default function Carousel({ children }) {
     <div className={styles.carouselSection}>
       <div className={styles.carouselControls}>
         {showLeftArrow && (
-          <button 
+          <button
             className={`${styles.arrowBtn} ${styles.leftArrow}`}
-            onClick={() => scroll('left')}
-            aria-label="Ver anteriores"
-          >
+            onClick={() => scroll("left")}
+            aria-label="Ver anteriores">
             <i className="fas fa-chevron-left"></i>
           </button>
         )}
         {showRightArrow && (
-          <button 
+          <button
             className={`${styles.arrowBtn} ${styles.rightArrow}`}
-            onClick={() => scroll('right')}
-            aria-label="Ver mais"
-          >
+            onClick={() => scroll("right")}
+            aria-label="Ver mais">
             <i className="fas fa-chevron-right"></i>
           </button>
         )}
       </div>
-      
-      <div 
-        className={`${styles.carouselContainer} ${isDragging ? styles.dragging : ''}`}
+
+      <div
+        className={`${styles.carouselContainer} ${isDragging ? styles.dragging : ""}`}
         ref={scrollContainerRef}
         onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
-        onMouseMove={handleMouseMove}
-      >
-        <div className={styles.carouselTrack}>
-          {children}
-        </div>
+        onMouseMove={handleMouseMove}>
+        <div className={styles.carouselTrack}>{children}</div>
       </div>
     </div>
   );

@@ -125,7 +125,6 @@ export default function Cart() {
   const today = new Date().toISOString().split('T')[0];
 
   useEffect(() => {
-    // persist cart to localStorage
     try {
       localStorage.setItem('cart', JSON.stringify(cartItems));
     } catch (err) {
@@ -138,11 +137,9 @@ export default function Cart() {
     const load = async () => {
       try {
         const ids = cartItems.map(i => i.product_id).filter(Boolean);
-        // always fetch categories
         const catsPromise = api.get('/categories');
 
         if (ids.length > 0) {
-          // fetch products and images for these ids
           const [prodResp, imgsResp, catsResp] = await Promise.all([
             api.get(`/products?product_id=in.(${ids.join(',')})`),
             api.get(`/product_images?product_id=in.(${ids.join(',')})`),
@@ -153,7 +150,6 @@ export default function Cart() {
           const prods = prodResp.data || [];
           const imgs = imgsResp.data || [];
 
-          // map images by product_id and pick first image_url
           const imgsByProduct = imgs.reduce((acc, im) => {
             const id = im.product_id ?? im.productId ?? im.product_id;
             if (!acc[id]) acc[id] = [];

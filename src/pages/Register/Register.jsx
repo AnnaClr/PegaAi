@@ -159,10 +159,7 @@ export default function Register() {
                 checked={formData.terms}
                 onChange={handleChange}
               />
-              Eu concordo com os
-              <a href="#">Termos de uso</a>
-              e
-              <a href="#">Política de privacidade</a>
+              Eu concordo com os<a href="#">Termos de uso</a>e<a href="#">Política de privacidade</a>
             </label>
           </div>
           

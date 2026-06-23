@@ -1,25 +1,30 @@
 .productCard {
-  background: white;
+  background: var(--bg-card);
   border-radius: 16px;
   overflow: hidden;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 1px solid #f3f4f6;
+  border: 1px solid var(--border-color);
   cursor: pointer;
   position: relative;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 2px 8px var(--shadow-color);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 380px;
 }
 
 .productCard:hover {
   transform: translateY(-8px);
-  box-shadow: 0 20px 40px rgba(94, 23, 235, 0.12);
-  border-color: #e8e0ff;
+  box-shadow: 0 20px 40px var(--shadow-hover);
+  border-color: var(--primary);
 }
 
 .productImage {
   height: 220px;
   overflow: hidden;
   position: relative;
-  background: #faf9ff;
+  background: var(--bg-input);
+  flex-shrink: 0;
 }
 
 .productImage img {
@@ -53,47 +58,70 @@
   opacity: 1;
 }
 
+.statusBadge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: #dc2626;
+  color: #ffffff;
+  z-index: 2;
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3);
+}
+
 .productInfo {
   padding: 20px 20px 24px;
-  background: white;
+  background: var(--bg-card);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .productTitle {
   font-weight: 700;
   font-size: 1.05rem;
-  color: #1f2937;
+  color: var(--text-primary);
   margin: 0 0 6px 0;
   transition: color 0.3s ease;
   overflow: hidden;
   line-height: 1.4;
+  min-height: 2.8rem;
+  max-height: 2.8rem;
 }
 
 .productCard:hover .productTitle {
-  color: #5e17eb;
+  color: var(--primary);
 }
 
 .productCategory {
   font-size: 0.8rem;
-  color: #9ca3af;
+  color: var(--text-muted);
   margin: 0 0 10px 0;
   letter-spacing: 0.3px;
   font-weight: 500;
+  flex-shrink: 0;
 }
 
 .productPrice {
   font-size: 1.35rem;
   font-weight: 700;
-  color: #5e17eb;
+  color: var(--primary);
   margin: 10px 0 12px 0;
   display: flex;
   align-items: baseline;
   gap: 4px;
+  flex-shrink: 0;
 }
 
 .productPrice span {
   font-size: 0.75rem;
   font-weight: 500;
-  color: #9ca3af;
+  color: var(--text-muted);
 }
 
 .productRating {
@@ -102,6 +130,7 @@
   gap: 10px;
   margin-bottom: 16px;
   flex-wrap: wrap;
+  flex-shrink: 0;
 }
 
 .stars {
@@ -111,7 +140,7 @@
 }
 
 .starIcon {
-  color: #fbbf24;
+  color: var(--warning);
   font-size: 15px;
   transition: transform 0.2s ease;
 }
@@ -122,17 +151,17 @@
 
 .ratingText {
   font-size: 0.85rem;
-  color: #6b7280;
+  color: var(--text-muted);
   font-weight: 500;
 }
 
 .rentBtn {
   width: 100%;
-  background: linear-gradient(135deg, #5e17eb, #7c3aed);
+  background: linear-gradient(135deg, var(--primary-darker), var(--primary));
   border: none;
   padding: 12px 24px;
   border-radius: 12px;
-  color: white;
+  color: #ffffff;
   font-weight: 600;
   font-size: 0.95rem;
   cursor: pointer;
@@ -140,6 +169,8 @@
   position: relative;
   overflow: hidden;
   letter-spacing: 0.3px;
+  margin-top: auto;
+  flex-shrink: 0;
 }
 
 .rentBtn::before {
@@ -149,17 +180,17 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, #7c3aed, #5e17eb);
+  background: linear-gradient(135deg, var(--primary), var(--primary-darker));
   opacity: 0;
   transition: opacity 0.3s ease;
 }
 
-.rentBtn:hover {
+.rentBtn:hover:not(:disabled) {
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(94, 23, 235, 0.35);
 }
 
-.rentBtn:hover::before {
+.rentBtn:hover:not(:disabled)::before {
   opacity: 1;
 }
 
@@ -168,11 +199,30 @@
   z-index: 1;
 }
 
-.rentBtn:active {
+.rentBtn:active:not(:disabled) {
   transform: scale(0.97);
 }
 
+.rentBtnDisabled {
+  background: #dc2626 !important;
+  cursor: not-allowed !important;
+  opacity: 0.7;
+}
+
+.rentBtnDisabled:hover {
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.rentBtnDisabled::before {
+  display: none !important;
+}
+
 @media (max-width: 768px) {
+  .productCard {
+    min-height: 340px;
+  }
+
   .productImage {
     height: 180px;
   }
@@ -183,6 +233,8 @@
   
   .productTitle {
     font-size: 0.95rem;
+    min-height: 2.6rem;
+    max-height: 2.6rem;
   }
   
   .productPrice {
@@ -193,9 +245,18 @@
     padding: 10px 20px;
     font-size: 0.9rem;
   }
+
+  .statusBadge {
+    font-size: 0.6rem;
+    padding: 4px 10px;
+  }
 }
 
 @media (max-width: 480px) {
+  .productCard {
+    min-height: 300px;
+  }
+
   .productImage {
     height: 160px;
   }
@@ -206,6 +267,8 @@
   
   .productTitle {
     font-size: 0.9rem;
+    min-height: 2.4rem;
+    max-height: 2.4rem;
   }
   
   .productRating {
@@ -218,6 +281,13 @@
   
   .ratingText {
     font-size: 0.75rem;
+  }
+
+  .statusBadge {
+    font-size: 0.55rem;
+    padding: 3px 8px;
+    top: 8px;
+    right: 8px;
   }
 }
 

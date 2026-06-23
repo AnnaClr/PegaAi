@@ -26,7 +26,7 @@ async function getProductImages(productId) {
     const response = await api.get(
       `/product_images?product_id=eq.${productId}`,
     );
-    return response.data;
+    return response.data || [];
   } catch (error) {
     console.error(
       "Erro ao buscar imagens do produto:",
@@ -49,4 +49,17 @@ async function getCategory(id) {
   }
 }
 
-export { getProduct, getProductImages, getCategory };
+async function getProductOwner(userId) {
+  try {
+    const response = await api.get(`/users?user_id=eq.${userId}`);
+    return response.data?.[0] ?? null;
+  } catch (error) {
+    console.error(
+      "Erro ao buscar dono do produto:",
+      error.response?.data || error.message,
+    );
+    return null;
+  }
+}
+
+export { getProduct, getProductImages, getCategory, getProductOwner };

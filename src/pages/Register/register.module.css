@@ -1,262 +1,419 @@
 ﻿.registerContainer {
-  min-height: 100vh;
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 2.5rem;
+  display: flex;
   align-items: center;
-  padding: 3rem 4rem;
-  background: linear-gradient(180deg, #f8f9ff 0%, #f5f0ff 100%);
+  justify-content: center;
+  min-height: 100vh;
+  background: var(--bg-primary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  padding: 40px 20px;
+  box-sizing: border-box;
 }
 
 .registerCard {
-  background: #ffffff;
-  border-radius: 32px;
-  padding: 3rem;
-  box-shadow: 0 30px 80px rgba(15, 23, 42, 0.12);
-  border: 1px solid rgba(99, 102, 241, 0.08);
-  overflow: hidden;
-  animation: fadeIn 0.7s ease-out both;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 480px;
+  height: 600px;
+  padding: 40px 40px;
+  background-color: var(--bg-secondary);
+  border-radius: 16px 0 0 16px;
+  box-shadow: 0 8px 30px var(--shadow-color);
+  box-sizing: border-box;
+  flex-shrink: 0;
 }
 
 .registerHeader {
-  margin-bottom: 2rem;
+  margin-bottom: 24px;
+  text-align: left;
 }
 
 .registerHeader h1 {
-  font-size: clamp(2rem, 2.5vw, 2.6rem);
-  line-height: 1.05;
-  color: #111827;
-  margin-bottom: 0.65rem;
+  margin: 0 0 4px 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-primary);
 }
 
 .registerHeader p {
-  color: #4b5563;
-  font-size: 1rem;
+  margin: 0;
+  font-size: 14px;
+  color: var(--text-muted);
 }
 
 .registerForm {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 12px;
+  flex: 1;
 }
 
 .formRow {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
 }
 
 .inputGroup {
   display: flex;
   flex-direction: column;
-  gap: 0.65rem;
+  gap: 4px;
 }
 
 .inputGroup label {
-  color: #334155;
+  font-size: 12px;
   font-weight: 600;
-  font-size: 0.95rem;
+  color: var(--text-primary);
 }
 
 .optional {
-  color: #6b7280;
   font-weight: 400;
-  font-size: 0.9rem;
+  color: var(--text-muted);
 }
 
 .inputGroup input {
   width: 100%;
-  min-height: 52px;
-  border-radius: 16px;
-  border: 1px solid #dbe1ef;
-  background: #f8f9ff;
-  padding: 0 1rem;
-  font-size: 1rem;
-  color: #111827;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  padding: 10px 12px;
+  font-size: 13px;
+  color: var(--text-primary);
+  background-color: var(--input-bg);
+  border: 1.5px solid var(--input-border);
+  border-radius: 8px;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+}
+
+.inputGroup input::placeholder {
+  color: var(--text-light);
 }
 
 .inputGroup input:focus {
-  border-color: #8b5cf6;
-  box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.12);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.08);
+  background-color: var(--bg-secondary);
+}
+
+.inputError {
+  border-color: var(--error) !important;
+}
+
+.inputError:focus {
+  border-color: var(--error) !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important;
+}
+
+.errorText {
+  display: block;
+  font-size: 11px;
+  color: var(--error);
+  margin-top: 2px;
+  animation: fadeIn 0.25s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .terms {
-  padding: 0.5rem 0;
+  margin-top: 2px;
 }
 
 .checkbox {
   display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  gap: 0.75rem;
-  color: #475569;
-  font-size: 0.95rem;
+  text-align: left;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  cursor: pointer;
 }
 
 .checkbox input {
-  margin-top: 0.15rem;
-  accent-color: #8b5cf6;
+  width: 14px;
+  height: 14px;
+  accent-color: var(--primary);
+  text-align: left;
+  cursor: pointer;
 }
 
 .checkbox a {
-  color: #5b21b6;
+  color: var(--primary);
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.checkbox a:hover {
+  color: var(--primary-dark);
   text-decoration: underline;
-  text-underline-offset: 3px;
 }
 
 .registerBtn {
   width: 100%;
-  padding: 1rem 1.15rem;
-  border-radius: 18px;
-  background: linear-gradient(135deg, #7c3aed, #4f46e5);
+  padding: 12px;
+  margin-top: 2px;
+  font-size: 14px;
+  font-weight: 600;
   color: #ffffff;
-  font-size: 1rem;
-  font-weight: 700;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 16px 30px rgba(79, 70, 229, 0.18);
+  background: var(--primary);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.25s ease, transform 0.15s ease, box-shadow 0.25s ease;
 }
 
-.registerBtn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 20px 40px rgba(79, 70, 229, 0.24);
+.registerBtn:hover:not(:disabled) {
+  background: var(--primary-dark);
+  box-shadow: 0 4px 16px rgba(124, 58, 237, 0.25);
+}
+
+.registerBtn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.registerBtn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.spinner {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
 .socialRegister {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  padding-top: 0.5rem;
+  align-items: center;
+  gap: 12px;
+  margin-top: 4px;
 }
 
 .socialRegister span {
-  color: #6b7280;
-  font-size: 0.95rem;
+  position: relative;
+  width: 100%;
   text-align: center;
+  font-size: 11px;
+  color: var(--text-light);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.socialRegister span::before,
+.socialRegister span::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 34%;
+  height: 1px;
+  background-color: var(--border-color);
+}
+
+.socialRegister span::before {
+  left: 0;
+}
+
+.socialRegister span::after {
+  right: 0;
 }
 
 .socialIcons {
   display: flex;
-  justify-content: center;
-  gap: 0.85rem;
+  gap: 12px;
 }
 
 .socialBtn {
-  width: 54px;
-  height: 54px;
-  border-radius: 16px;
-  border: 1px solid #e2e8f0;
-  background: #ffffff;
-  display: grid;
-  place-items: center;
-  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  background: var(--bg-secondary);
+  border: 1.5px solid var(--border-color);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  color: var(--text-secondary);
+  font-size: 1rem;
 }
 
-.socialBtn:hover {
+.socialBtn:hover:not(:disabled) {
   transform: translateY(-2px);
-  border-color: #8b5cf6;
-  box-shadow: 0 16px 30px rgba(99, 102, 241, 0.14);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
 
-.socialBtn.google {
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+.socialBtn:active:not(:disabled) {
+  transform: scale(0.95);
 }
 
-.socialBtn.facebook {
+.socialBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.google:hover {
+  border-color: #db4437;
+  background: #fef5f4;
+  color: #db4437;
+  box-shadow: 0 4px 12px rgba(219, 68, 55, 0.12);
+}
+
+.facebook:hover {
+  border-color: #1877f2;
+  background: #f0f5fe;
   color: #1877f2;
+  box-shadow: 0 4px 12px rgba(24, 119, 242, 0.12);
 }
 
-.socialBtn.apple {
-  color: #111827;
+.apple:hover {
+  border-color: #000000;
+  background: #f5f5f5;
+  color: #000000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .registerFooter {
-  margin-top: 1.75rem;
+  margin-top: 20px;
   text-align: center;
-  color: #475569;
-  font-size: 0.96rem;
+  font-size: 13px;
+  color: var(--text-muted);
 }
 
 .registerFooter a {
-  color: #7c3aed;
-  font-weight: 700;
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.registerFooter a:hover {
+  color: var(--primary-dark);
 }
 
 .registerImage {
   position: relative;
-  min-height: 620px;
-  border-radius: 32px;
+  flex-shrink: 0;
+  width: 480px;
+  height: 600px;
   overflow: hidden;
-  box-shadow: 0 30px 80px rgba(15, 23, 42, 0.12);
-  animation: fadeIn 0.9s ease-out both;
+  border-radius: 0 16px 16px 0;
 }
 
 .registerImage img {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.registerImage:hover img {
+  transform: scale(1.02);
 }
 
 .imageOverlay {
   position: absolute;
-  inset: auto 0 0;
-  padding: 2rem;
-  background: linear-gradient(180deg, transparent 0%, rgba(15, 23, 42, 0.78) 100%);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 28px;
+  background: linear-gradient(to top, rgba(20, 10, 40, 0.8) 0%, rgba(20, 10, 40, 0.1) 70%, transparent 100%);
   color: #ffffff;
 }
 
 .imageOverlay h3 {
-  margin-bottom: 0.75rem;
-  font-size: 1.6rem;
-  line-height: 1.1;
+  margin: 0 0 4px 0;
+  font-size: 18px;
+  font-weight: 700;
 }
 
 .imageOverlay p {
-  max-width: 14rem;
-  color: #d1d5db;
-  font-size: 0.98rem;
+  margin: 0;
+  font-size: 13px;
+  opacity: 0.9;
 }
 
-@media (max-width: 1024px) {
-  .registerContainer {
-    grid-template-columns: 1fr;
-    padding: 2.2rem 2.5rem;
-    gap: 1.75rem;
-  }
-
+@media (max-width: 900px) {
   .registerImage {
-    min-height: 420px;
-  }
-}
-
-@media (max-width: 720px) {
-  .registerContainer {
-    padding: 1.75rem 1.5rem;
+    display: none;
   }
 
   .registerCard {
-    padding: 2rem;
+    background: none;
+    box-shadow: none;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 480px;
+    height: auto;
+    min-height: 560px;
+    padding: 32px 28px;
+    flex-shrink: 1;
+  }
+
+  .registerContainer {
+    padding: 20px 16px;
   }
 
   .formRow {
     grid-template-columns: 1fr;
   }
-
-  .socialIcons {
-    gap: 0.65rem;
-  }
-
-  .imageOverlay {
-    padding: 1.5rem;
-  }
 }
 
-@media (max-width: 520px) {
+@media (max-width: 480px) {
   .registerCard {
-    border-radius: 24px;
+    padding: 24px 16px;
+    min-height: 480px;
+    background: none;
+    box-shadow: none;
+  }
+
+  .registerHeader h1 {
+    font-size: 20px;
+  }
+
+  .registerHeader p {
+    font-size: 13px;
+  }
+
+  .socialRegister span::before,
+  .socialRegister span::after {
+    width: 30%;
   }
 
   .registerBtn {
-    padding: 0.95rem 1rem;
+    padding: 10px;
+    font-size: 13px;
+  }
+
+  .socialBtn {
+    width: 34px;
+    height: 34px;
+    font-size: 0.85rem;
+  }
+
+  .errorText {
+    font-size: 10px;
+  }
+
+  .checkbox {
+    font-size: 11px;
+  }
+
+  .inputGroup input {
+    padding: 8px 10px;
+    font-size: 12px;
   }
 }

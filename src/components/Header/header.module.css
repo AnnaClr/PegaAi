@@ -1,9 +1,10 @@
 .header {
-  background: #161127;
+  background: var(--header-bg);
   padding: 16px 0;
   position: sticky;
   top: 0;
   z-index: 1000;
+  box-shadow: var(--header-shadow) 1.95px 1.95px 2.6px;
 }
 
 .headerContainer {
@@ -22,19 +23,25 @@
   font-family: 'Berkshire Swash', cursive;
   font-size: 1.8rem;
   cursor: pointer;
-  transition: opacity 0.3s ease;
+  text-decoration: none;
+  gap: 1px;
+  transition: opacity 0.2s ease;
+}
+
+.logo:hover {
+  opacity: 0.8;
 }
 
 .logoPega {
-  color: white;
+  color: var(--text-primary);
 }
 
 .logoAi {
-  color: #8B5CF6;
+  color: var(--primary-light);
 }
 
 .logoPlus {
-  color: white;
+  color: var(--text-primary);
   font-size: 1.6rem;
   margin-left: 2px;
 }
@@ -43,57 +50,107 @@
   display: none;
   background: none;
   border: none;
-  color: white;
+  color: var(--text-primary);
   font-size: 1.5rem;
   cursor: pointer;
-  transition: color 0.3s ease;
+  transition: color 0.2s ease;
+  padding: 8px;
 }
 
 .mobileMenuBtn:hover {
-  color: #8B5CF6;
+  color: var(--primary-light);
 }
 
 .navMenu {
   display: flex;
   align-items: center;
-  gap: 48px;
+  gap: 32px;
 }
 
-.navMenu a {
-  color: white;
+.link {
+  color: var(--text-secondary);
   text-decoration: none;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 500;
-  transition: color 0.3s ease;
+  transition: color 0.2s ease;
+  padding: 6px 0;
 }
 
-.navMenu a:hover {
-  color: #8B5CF6;
+.link:hover {
+  color: var(--text-primary);
 }
 
-.navMenu a i {
-  font-size: 1.2rem;
+.link.active {
+  color: var(--primary-light);
+}
+
+.cartLink {
+  display: flex;
+  align-items: center;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.cartLink:hover {
+  color: var(--text-primary);
+}
+
+.cartLink.active {
+  color: var(--primary-light);
+}
+
+.authButtons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.registerBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  font-family: 'Inter', sans-serif;
+}
+
+.registerBtn:hover {
+  border-color: var(--primary-light);
+  color: var(--primary-light);
+  background: var(--primary-lighter);
 }
 
 .entrarBtn {
-  background: #8B5CF6;
-  color: white;
+  background: var(--primary-light);
+  color: #ffffff;
   border: none;
-  padding: 10px 24px;
+  padding: 8px 24px;
   border-radius: 8px;
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  font-family: 'Inter', sans-serif;
 }
 
 .entrarBtn:hover {
-  background: #7C3AED;
-  transform: translateY(-1px);
+  background: var(--primary);
 }
 
 .profileLink {
   text-decoration: none;
+  display: flex;
+  align-items: center;
 }
 
 .profileIcon {
@@ -101,77 +158,143 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
-  font-size: 1.8rem;
-  color: white;
-  background: rgba(139, 92, 246, 0.15);
+  width: 40px;
+  height: 40px;
+  color: #4a5568;
+  background: #f7f7f7;
   border-radius: 50%;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   cursor: pointer;
 }
 
-.profileIcon i {
-  transition: transform 0.3s ease;
-}
-
 .profileIcon:hover {
-  background: #8B5CF6;
-  transform: scale(1.1);
-}
-
-.profileIcon:hover i {
-  transform: scale(1.05);
+  background: #f0edff;
+  color: #8B5CF6;
 }
 
 .profileBadge {
   position: absolute;
-  bottom: 2px;
-  right: 2px;
-  width: 12px;
-  height: 12px;
+  bottom: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
   background: #10B981;
-  border: 2px solid #161127;
+  border: 2px solid #ffffff;
   border-radius: 50%;
 }
 
+.logoutBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  color: #4a5568;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.logoutBtn:hover {
+  color: #ef4444;
+  background: #fef2f2;
+}
+
+@media (max-width: 992px) {
+  .navMenu {
+    gap: 24px;
+  }
+}
+
 @media (max-width: 768px) {
+  .header {
+    padding: 12px 0;
+  }
+
+  .headerContainer {
+    padding: 0 16px;
+  }
+
   .mobileMenuBtn {
     display: block;
   }
 
   .navMenu {
     position: fixed;
-    top: 70px;
+    top: 64px;
     left: -100%;
     width: 100%;
-    height: calc(100vh - 70px);
-    background: #161127;
+    height: calc(100vh - 64px);
+    background: #ffffff;
     flex-direction: column;
-    padding: 40px 20px;
+    padding: 24px;
     transition: left 0.3s ease;
-    gap: 30px;
+    gap: 16px;
     overflow-y: auto;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   }
 
   .navMenu.active {
     left: 0;
   }
 
-  .navMenu a, .entrarBtn {
+  .link {
     width: 100%;
     text-align: center;
+    font-size: 1rem;
+    padding: 10px 0;
+    border-radius: 8px;
+  }
+
+  .link:hover {
+    background: #f8f6ff;
+  }
+
+  .link.active {
+    background: #f8f6ff;
+  }
+
+  .cartLink {
+    width: 100%;
+    justify-content: center;
+    padding: 10px 0;
+  }
+
+  .authButtons {
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+  }
+
+  .registerBtn {
+    width: 100%;
+    justify-content: center;
+    padding: 12px;
+  }
+
+  .entrarBtn {
+    width: 100%;
+    text-align: center;
+    padding: 12px;
   }
 
   .profileLink {
     width: 100%;
-    display: flex;
     justify-content: center;
   }
   
   .profileIcon {
-    width: 50px;
-    height: 50px;
-    font-size: 2rem;
+    width: 48px;
+    height: 48px;
+  }
+
+  .logoutBtn {
+    width: 100%;
+    justify-content: center;
+    padding: 12px;
   }
 }

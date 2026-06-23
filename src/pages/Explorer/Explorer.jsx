@@ -88,8 +88,6 @@ const FiltersContent = ({
         />
       </div>
     </div>
-    
-    {/* Avaliações removidas do filtro */}
   </>
 );
 
@@ -133,8 +131,6 @@ export default function Explorer() {
 
     results = results.filter(product => Number(product.price_per_day ?? product.price ?? 0) <= maxPrice);
 
-    // rating filter removed
-
     switch (sortBy) {
       case 'lowest':
         results.sort((a, b) => a.price_per_day - b.price_per_day);
@@ -165,7 +161,6 @@ export default function Explorer() {
         const cats = catsResp.data ?? [];
         const imgs = imgsResp.data ?? [];
 
-        // map images by product_id
         const imgsByProduct = imgs.reduce((acc, im) => {
           const id = im.product_id ?? im.productId ?? im.product_id;
           if (!acc[id]) acc[id] = [];
@@ -247,8 +242,6 @@ export default function Explorer() {
   const handleSliderEnd = () => {
     isDraggingRef.current = false;
   };
-
-  // rating UI/helpers removed
 
   const getCategoryName = (categoryId) => {
     const category = categories.find(c => Number(c.category_id) === Number(categoryId));

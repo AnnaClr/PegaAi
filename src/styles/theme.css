@@ -1,0 +1,112 @@
+:root,
+body.light {
+  --bg-primary: #dcdee4;
+  --bg-secondary: #ffffff;
+  --bg-card: #ffffff;
+  --bg-input: #f9fafb;
+  --bg-hover: #f1f5f9;
+  
+  --text-primary: #1a1a2e;
+  --text-secondary: #374151;
+  --text-muted: #6b7280;
+  --text-light: #9ca3af;
+  
+  --border-color: #e5e7eb;
+  --border-light: #f1f5f9;
+  
+  --shadow-color: rgba(0, 0, 0, 0.06);
+  --shadow-hover: rgba(0, 0, 0, 0.08);
+  
+  --header-bg: #ffffff;
+  --header-shadow: rgba(0, 0, 0, 0.06);
+  
+  --footer-bg: #161127;
+  --footer-text: #d1d5db;
+  
+  --input-bg: #f9fafb;
+  --input-border: #e5e7eb;
+  --input-focus: #6c2bd9;
+  
+  --card-bg: #ffffff;
+  --card-shadow: rgba(0, 0, 0, 0.06);
+  
+  --hero-bg: #f8fafc;
+  
+  --category-overlay: rgba(94, 23, 235, 0.85);
+  
+  --primary: #7c3aed;
+  --primary-dark: #6c2bd9;
+  --primary-darker: #5e17eb;
+  --primary-light: #8B5CF6;
+  --primary-lighter: #f8f6ff;
+  
+  --success: #22c55e;
+  --success-dark: #16a34a;
+  --success-light: #10b981;
+  --success-lighter: #34d399;
+  
+  --error: #ef4444;
+  --error-dark: #dc2626;
+  --error-light: #991b1b;
+  
+  --warning: #f59e0b;
+  --warning-dark: #b86505;
+  
+  --info: #3b82f6;
+}
+
+body.dark {
+  --bg-primary: #0f0f1a;
+  --bg-secondary: #1a1a2e;
+  --bg-card: #1e1e32;
+  --bg-input: #2a2a42;
+  --bg-hover: #2a2a42;
+  
+  --text-primary: #e8e8f0;
+  --text-secondary: #b0b0c8;
+  --text-muted: #8888a0;
+  --text-light: #666680;
+  
+  --border-color: #2a2a42;
+  --border-light: #1e1e32;
+  
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  --shadow-hover: rgba(0, 0, 0, 0.4);
+  
+  --header-bg: #161127;
+  --header-shadow: rgba(0, 0, 0, 0.2);
+  
+  --footer-bg: #161127;
+  --footer-text: #8888a0;
+  
+  --input-bg: #2a2a42;
+  --input-border: #3a3a5a;
+  --input-focus: #8B5CF6;
+  
+  --card-bg: #1a1a2e;
+  --card-shadow: rgba(0, 0, 0, 0.3);
+  
+  --hero-bg: #0f0f1a;
+  
+  --category-overlay: rgba(110, 45, 238, 0.7);
+  
+  --primary: #8B5CF6;
+  --primary-dark: #7C3AED;
+  --primary-darker: #7536e1;
+  --primary-light: #a78bfa;
+  --primary-lighter: #1f1a3c;
+  
+  --success: #10b981;
+  --success-dark: #059669;
+  --success-light: #34d399;
+  --success-lighter: #6ee7b7;
+  
+  --error: #ef4444;
+  --error-dark: #b91c1c;
+  --error-light: #fca5a5;
+  
+  --warning: #f59e0b;
+  --warning-dark: #d97706;
+  
+  --info: #60a5fa;
+}

@@ -1,10 +1,5 @@
 import { Link } from 'react-router-dom';
-import { 
-  FaInstagram, 
-  FaFacebookF, 
-  FaLinkedinIn, 
-  FaTwitter 
-} from 'react-icons/fa';
+import { FaInstagram, FaFacebookF, FaLinkedinIn, FaTwitter } from 'react-icons/fa';
 import { FaCopyright } from 'react-icons/fa6';
 import styles from './footer.module.css';
 
@@ -28,8 +23,7 @@ export default function Footer() {
                 className={styles.socialLink}
                 aria-label="Instagram"
                 target="_blank"
-                rel="noopener noreferrer"
-              >
+                rel="noopener noreferrer">
                 <FaInstagram size={20} />
               </a>
               <a 
@@ -37,8 +31,7 @@ export default function Footer() {
                 className={styles.socialLink}
                 aria-label="Facebook"
                 target="_blank"
-                rel="noopener noreferrer"
-              >
+                rel="noopener noreferrer">
                 <FaFacebookF size={20} />
               </a>
               <a 
@@ -46,8 +39,7 @@ export default function Footer() {
                 className={styles.socialLink}
                 aria-label="LinkedIn"
                 target="_blank"
-                rel="noopener noreferrer"
-              >
+                rel="noopener noreferrer">
                 <FaLinkedinIn size={20} />
               </a>
               <a 
@@ -55,8 +47,7 @@ export default function Footer() {
                 className={styles.socialLink}
                 aria-label="Twitter"
                 target="_blank"
-                rel="noopener noreferrer"
-              >
+                rel="noopener noreferrer">
                 <FaTwitter size={20} />
               </a>
             </div>

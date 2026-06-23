@@ -6,7 +6,7 @@
 
 .main {
   padding: 2rem;
-  background: #f8f9fa;
+  background: var(--bg-primary);
   min-height: 100vh;
   width: 100%;
 }
@@ -21,10 +21,10 @@
 
 .filtersSidebar {
   width: 280px;
-  background: #ffffff;
+  background: var(--bg-card);
   padding: 1.5rem;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 8px var(--shadow-color);
   flex-shrink: 0;
 }
 
@@ -34,7 +34,7 @@
   align-items: center;
   margin-bottom: 1.5rem;
   padding-bottom: 0.5rem;
-  border-bottom: 2px solid #633ce3;
+  border-bottom: 2px solid var(--primary);
 }
 
 .filtersHeader h3 {
@@ -42,7 +42,7 @@
   align-items: center;
   gap: 0.5rem;
   font-size: 1.1rem;
-  color: #1a1a2e;
+  color: var(--text-primary);
   margin: 0;
 }
 
@@ -53,7 +53,7 @@
 }
 
 .filterIcon {
-  color: #633ce3;
+  color: var(--primary);
 }
 
 .clearFiltersBtn {
@@ -62,7 +62,7 @@
   gap: 0.3rem;
   background: none;
   border: none;
-  color: #633ce3;
+  color: var(--primary);
   font-size: 0.8rem;
   cursor: pointer;
   padding: 0.3rem 0.5rem;
@@ -72,13 +72,13 @@
 }
 
 .clearFiltersBtn:hover {
-  background: #f0edff;
+  background: var(--primary-lighter);
 }
 
 .closeFiltersBtn {
   background: none;
   border: none;
-  color: #666;
+  color: var(--text-light);
   font-size: 1.1rem;
   cursor: pointer;
   padding: 0.3rem;
@@ -90,14 +90,14 @@
 }
 
 .closeFiltersBtn:hover {
-  background: #f0f0f0;
-  color: #1a1a2e;
+  background: var(--bg-hover);
+  color: var(--text-primary);
 }
 
 .filterSection {
   margin-bottom: 1.5rem;
   padding-bottom: 1.5rem;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .filterSection:last-child {
@@ -108,7 +108,7 @@
 
 .filterSection h4 {
   margin-bottom: 0.75rem;
-  color: #1a1a2e;
+  color: var(--text-primary);
   font-size: 0.95rem;
   font-weight: 600;
 }
@@ -118,20 +118,20 @@
   align-items: center;
   gap: 0.5rem;
   margin-bottom: 0.5rem;
-  color: #666;
+  color: var(--text-muted);
   cursor: pointer;
   font-size: 0.9rem;
 }
 
 .filterSection label:hover {
-  color: #1a1a2e;
+  color: var(--text-primary);
 }
 
 .filterSection input[type="checkbox"] {
   width: 16px;
   height: 16px;
   cursor: pointer;
-  accent-color: #633ce3;
+  accent-color: var(--primary);
   flex-shrink: 0;
 }
 
@@ -139,7 +139,7 @@
   display: flex;
   justify-content: space-between;
   font-size: 0.85rem;
-  color: #1a1a2e;
+  color: var(--text-primary);
   font-weight: 600;
   margin-bottom: 0.5rem;
 }
@@ -158,7 +158,7 @@
 .sliderTrack {
   width: 100%;
   height: 6px;
-  background: #e0e0e0;
+  background: var(--border-color);
   border-radius: 3px;
   position: relative;
   overflow: hidden;
@@ -166,7 +166,7 @@
 
 .sliderFill {
   height: 100%;
-  background: #633ce3;
+  background: var(--primary);
   border-radius: 3px;
   transition: width 0.05s ease;
 }
@@ -176,7 +176,7 @@
   top: 50%;
   width: 20px;
   height: 20px;
-  background: #633ce3;
+  background: var(--primary);
   border-radius: 50%;
   border: 3px solid white;
   box-shadow: 0 2px 8px rgba(99, 60, 227, 0.4);
@@ -200,7 +200,7 @@
   align-items: center;
   gap: 0.5rem;
   cursor: pointer;
-  color: #666;
+  color: var(--text-muted);
   font-size: 0.9rem;
   padding: 0.3rem 0.5rem;
   border-radius: 8px;
@@ -208,23 +208,23 @@
 }
 
 .ratingOption:hover {
-  background: #f5f0ff;
-  color: #1a1a2e;
+  background: var(--primary-lighter);
+  color: var(--text-primary);
 }
 
 .ratingOption.active {
-  background: #f0edff;
-  color: #633ce3;
+  background: var(--primary-lighter);
+  color: var(--primary);
   font-weight: 500;
 }
 
 .starIcon {
-  color: #fbbf24;
+  color: var(--warning);
   font-size: 0.85rem;
 }
 
 .starInteractive {
-  color: #fbbf24;
+  color: var(--warning);
   font-size: 0.85rem;
   cursor: pointer;
   transition: transform 0.2s ease;
@@ -262,27 +262,28 @@
 .searchBar input {
   flex: 1;
   padding: 0.75rem 1rem;
-  border: 2px solid #e0e0e0;
+  border: 2px solid var(--border-color);
   border-radius: 12px 0 0 12px;
   font-size: 0.9rem;
   font-family: 'Inter', sans-serif;
-  background: white;
+  background: var(--bg-card);
+  color: var(--text-primary);
   transition: border-color 0.3s ease;
   min-width: 0;
 }
 
 .searchBar input:focus {
   outline: none;
-  border-color: #633ce3;
+  border-color: var(--primary);
 }
 
 .searchBar input::placeholder {
-  color: #aaa;
+  color: var(--text-light);
 }
 
 .searchBtn {
   padding: 0.75rem 1.25rem;
-  background: #633ce3;
+  background: var(--primary);
   color: white;
   border: none;
   border-radius: 0 12px 12px 0;
@@ -295,7 +296,7 @@
 }
 
 .searchBtn:hover {
-  background: #4a2ab8;
+  background: var(--primary-dark);
 }
 
 .headerControls {
@@ -310,7 +311,7 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.6rem 1rem;
-  background: #633ce3;
+  background: var(--primary);
   color: white;
   border: none;
   border-radius: 8px;
@@ -323,14 +324,14 @@
 }
 
 .filterToggleBtn:hover {
-  background: #4a2ab8;
+  background: var(--primary-dark);
 }
 
 .filterBadge {
   position: absolute;
   top: -6px;
   right: -6px;
-  background: #f59e0b;
+  background: var(--warning);
   color: white;
   font-size: 0.65rem;
   font-weight: 600;
@@ -348,25 +349,26 @@
 }
 
 .sortOptions label {
-  color: #666;
+  color: var(--text-muted);
   font-size: 0.9rem;
   white-space: nowrap;
 }
 
 .sortOptions select {
   padding: 0.5rem 1rem;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   font-size: 0.9rem;
   font-family: 'Inter', sans-serif;
-  background: white;
+  background: var(--bg-card);
+  color: var(--text-primary);
   cursor: pointer;
   transition: border-color 0.3s ease;
 }
 
 .sortOptions select:focus {
   outline: none;
-  border-color: #633ce3;
+  border-color: var(--primary);
 }
 
 .resultsInfo {
@@ -374,7 +376,7 @@
   flex-direction: column;
   gap: 0.75rem;
   margin-bottom: 1.5rem;
-  color: #666;
+  color: var(--text-muted);
   font-size: 0.9rem;
 }
 
@@ -387,8 +389,8 @@
 .filterTag {
   display: flex;
   align-items: center;
-  background: #f0edff;
-  color: #633ce3;
+  background: var(--primary-lighter);
+  color: var(--primary);
   padding: 0.25rem 0.6rem;
   border-radius: 20px;
   font-size: 0.8rem;
@@ -405,7 +407,7 @@
   grid-column: 1 / -1;
   text-align: center;
   padding: 3rem;
-  color: #666;
+  color: var(--text-muted);
 }
 
 .noResults p {
@@ -430,7 +432,7 @@
   width: 320px;
   max-width: 90%;
   height: 100%;
-  background: white;
+  background: var(--bg-card);
   padding: 1.5rem;
   overflow-y: auto;
   animation: slideIn 0.3s ease;
@@ -456,11 +458,11 @@
   }
   
   .filterToggleBtn:hover {
-    background: #633ce3;
+    background: var(--primary);
   }
   
   .searchBtn:hover {
-    background: #633ce3;
+    background: var(--primary);
   }
   
   .ratingOption:hover {

@@ -27,11 +27,19 @@ export default function Checkout() {
       return [];
     }
   })();
-  const cartItemsFromState = fromState ?? fromStorage;
+  
+  const allCartItems = fromState ?? fromStorage;
+  const validCartItems = allCartItems.filter(item => item.days > 0);
+
+  useEffect(() => {
+    if (validCartItems.length === 0) {
+      navigate('/cart');
+    }
+  }, [validCartItems.length, navigate]);
 
   const initialPaymentMethod = location.state?.paymentMethod || 'card';
   
-  const [cartItemsState, setCartItemsState] = useState(cartItemsFromState);
+  const [cartItemsState, setCartItemsState] = useState(validCartItems);
   const [periodErrors, setPeriodErrors] = useState({});
   const [products, setProducts] = useState([]);
   const [paymentMethod, setPaymentMethod] = useState(initialPaymentMethod);
@@ -101,39 +109,6 @@ export default function Checkout() {
     return () => { mounted = false; };
   }, [cartItemsState]);
 
-  const handleDateChangeInCheckout = (itemId, field, value) => {
-    setCartItemsState(prev => prev.map(item => {
-      if (item.id !== itemId) return item;
-      const updatedItem = { ...item, [field]: value };
-
-      if (updatedItem.startDate && updatedItem.endDate) {
-        const start = new Date(updatedItem.startDate);
-        const end = new Date(updatedItem.endDate);
-        const diffTime = Math.abs(end - start);
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-        if (diffDays === 0) {
-          setPeriodErrors(prev => ({ ...prev, [itemId]: 'Selecione pelo menos 1 dia' }));
-          return { ...updatedItem, days: 0 };
-        }
-
-        const product = products.find(p => Number(p.product_id) === Number(updatedItem.product_id));
-        if (product && diffDays > product.max_days) {
-          setPeriodErrors(prev => ({ ...prev, [itemId]: `Máximo de ${product.max_days} dias` }));
-          return { ...updatedItem, days: 0 };
-        }
-
-        setPeriodErrors(prev => {
-          const copy = { ...prev };
-          delete copy[itemId];
-          return copy;
-        });
-        return { ...updatedItem, days: diffDays };
-      }
-      return updatedItem;
-    }));
-  };
-
   const handleNextStep = () => {
     if (step < 3) {
       setStep(step + 1);
@@ -149,7 +124,6 @@ export default function Checkout() {
   };
 
   const handleConfirmOrder = async () => {
-    // validate
     const itemsToConfirm = cartItemsState.filter(i => i.days > 0);
     if (itemsToConfirm.length === 0) {
       alert('Nenhum período válido para confirmar');
@@ -158,13 +132,11 @@ export default function Checkout() {
 
     const rawUser = localStorage.getItem('user');
     if (!rawUser) {
-      // require login
       navigate('/login');
       return;
     }
     const user = JSON.parse(rawUser);
 
-    // prepare payload for rentals table
     const rentals = itemsToConfirm.map(item => ({
       user_id: user.user_id ?? user.id ?? user.userId,
       product_id: item.product_id,
@@ -173,10 +145,8 @@ export default function Checkout() {
     }));
 
     try {
-      // insert rentals
       await api.post('/rentals', rentals);
 
-      // remove confirmed items from localStorage cart
       try {
         const raw = localStorage.getItem('cart');
         if (raw) {
@@ -253,7 +223,7 @@ export default function Checkout() {
           <div className={styles.checkoutHeader}>
             <p className={styles.checkoutSubtitle}>
               {step === 1 && 'Escolha a forma de pagamento'}
-              {step === 2 && 'Revise seu pedido'}
+              {step === 2 && `Revise seu pedido (${cartItemsState.length} itens)`}
               {step === 3 && 'Confirme seu pedido'}
             </p>
           </div>
@@ -457,24 +427,17 @@ export default function Checkout() {
                     <div className={styles.reviewItemInfo}>
                       <h4>{item.name}</h4>
                       <div className={styles.reviewDates}>
-                        <label>Início</label>
-                        <input
-                          type="date"
-                          value={item.startDate}
-                          onChange={(e) => handleDateChangeInCheckout(item.id, 'startDate', e.target.value)}
-                          min={new Date().toISOString().split('T')[0]}
-                        />
-                        <label>Fim</label>
-                        <input
-                          type="date"
-                          value={item.endDate}
-                          onChange={(e) => handleDateChangeInCheckout(item.id, 'endDate', e.target.value)}
-                          min={item.startDate || new Date().toISOString().split('T')[0]}
-                        />
+                        <span className={styles.dateInfo}>
+                          <strong>Início:</strong> {item.startDate || '—'}
+                        </span>
+                        <span className={styles.dateInfo}>
+                          <strong>Fim:</strong> {item.endDate || '—'}
+                        </span>
+                        <span className={styles.dateInfo}>
+                          <strong>Dias:</strong> {item.days || '—'}
+                        </span>
                       </div>
-                      <p>{item.days} {item.days === 1 ? 'dia' : 'dias'} · {item.startDate || '—'} a {item.endDate || '—'}</p>
-                      <span>{formatCurrency(item.total)}</span>
-                      {periodErrors[item.id] && <div className={styles.errorMessage}>{periodErrors[item.id]}</div>}
+                      <span className={styles.reviewTotal}>{formatCurrency(item.total)}</span>
                     </div>
                   </div>
                 ))}

@@ -5,7 +5,6 @@ async function getMyProducts(userId) {
     const response = await api.get(`/products?user_id=eq.${userId}`);
     const products = response.data ?? [];
 
-    // For each product, load images from product_images and attach first image
     await Promise.all(
       products.map(async (p) => {
         try {

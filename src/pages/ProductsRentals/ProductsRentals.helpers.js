@@ -7,12 +7,10 @@ async function getRentalsByUserId(userId) {
 
     if (!Array.isArray(rentals) || rentals.length === 0) return [];
 
-    // collect unique product ids
     const productIds = Array.from(
       new Set(rentals.map((r) => r.product_id).filter(Boolean)),
     );
 
-    // fetch products and images in parallel
     const [prodResp, imgsResp] = await Promise.all([
       api.get(`/products?product_id=in.(${productIds.join(",")})`),
       api.get(`/product_images?product_id=in.(${productIds.join(",")})`),
@@ -21,7 +19,6 @@ async function getRentalsByUserId(userId) {
     const products = prodResp.data ?? [];
     const imgs = imgsResp.data ?? [];
 
-    // map images by product_id
     const imgsByProduct = imgs.reduce((acc, im) => {
       const id = im.product_id ?? im.productId ?? im.product_id;
       if (!acc[id]) acc[id] = [];
@@ -29,7 +26,6 @@ async function getRentalsByUserId(userId) {
       return acc;
     }, {});
 
-    // map products by id and attach first image
     const productsById = products.reduce((acc, p) => {
       const id = p.product_id ?? p.id;
       const productImages = imgsByProduct[id] ?? [];
@@ -43,7 +39,6 @@ async function getRentalsByUserId(userId) {
       return acc;
     }, {});
 
-    // attach product object to rentals
     const mapped = rentals.map((r) => ({
       ...r,
       product: productsById[r.product_id] ?? null,
