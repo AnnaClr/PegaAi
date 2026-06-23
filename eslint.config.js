@@ -17,7 +17,7 @@ export default defineConfig([
     languageOptions: {
       globals: {
         ...globals.browser,
-        ...globals.node  // 👈 Adiciona variáveis do Node.js (incluindo process)
+        ...globals.node 
       },
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
